@@ -20,6 +20,16 @@ async function test() {
     });
     const d2 = await r2.json();
     fs.writeFileSync('test_output.json', JSON.stringify({ d1, d2 }, null, 2));
+
+    console.log('Generating PDF...');
+    const r3 = await fetch('http://localhost:3001/api/pdf', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ htmlContent: d2.data.tailored_resume_html, template: 'modern' })
+    });
+    const d3 = await r3.json();
+    console.log(d3);
+
     console.log('Done mapping.');
   } catch(e) {
     console.error(e);
