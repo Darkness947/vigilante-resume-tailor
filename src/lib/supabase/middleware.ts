@@ -15,7 +15,7 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value));
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
           supabaseResponse = NextResponse.next({
             request,
           });
@@ -27,27 +27,31 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // refreshing the auth token
+  // Refreshing the auth token
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Admin and Dashboard route protection
-  const isDashboard = request.nextUrl.pathname.startsWith('/dashboard');
-  const isAdmin = request.nextUrl.pathname.startsWith('/admin');
+  const pathname = request.nextUrl.pathname;
+
+  // Match locale-prefixed protected routes: /en/dashboard, /ar/admin, etc.
+  const isDashboard = /^\/(en|ar)\/dashboard/.test(pathname);
+  const isAdmin = /^\/(en|ar)\/admin/.test(pathname);
 
   if (!user && (isDashboard || isAdmin)) {
-    // no user, potentially respond by redirecting the user to the login page
+    // Extract locale from path
+    const locale = pathname.startsWith('/ar') ? 'ar' : 'en';
     const url = request.nextUrl.clone();
-    url.pathname = '/auth/login';
+    url.pathname = `/${locale}/auth/login`;
     return NextResponse.redirect(url);
   }
 
   // If visiting auth pages while logged in, redirect to dashboard
-  const isAuthPage = request.nextUrl.pathname.startsWith('/auth/login') || request.nextUrl.pathname.startsWith('/auth/signup');
+  const isAuthPage = /^\/(en|ar)\/auth\/(login|signup)/.test(pathname);
   if (user && isAuthPage) {
+    const locale = pathname.startsWith('/ar') ? 'ar' : 'en';
     const url = request.nextUrl.clone();
-    url.pathname = '/dashboard';
+    url.pathname = `/${locale}/dashboard`;
     return NextResponse.redirect(url);
   }
 

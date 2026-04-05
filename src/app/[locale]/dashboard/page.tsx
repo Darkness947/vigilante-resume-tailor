@@ -44,7 +44,7 @@ export default function DashboardPage() {
   } = useResumeTailor();
 
   return (
-    <div className="bg-[#071325] min-h-screen text-[#d7e3fc] p-6 lg:p-12 font-sans selection:bg-[#00C2CB] selection:text-[#01172C]">
+    <div className="text-[#d7e3fc] p-6 lg:p-10 font-sans selection:bg-[#00C2CB] selection:text-[#01172C]">
       
       <div className="max-w-7xl mx-auto space-y-8">
         <header className="mb-10">

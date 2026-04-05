@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get('code');
-  const next = requestUrl.searchParams.get('next') || '/dashboard';
+  const next = requestUrl.searchParams.get('next') || '/en/dashboard';
 
   if (code) {
     const cookieStore = await cookies();
@@ -23,6 +23,7 @@ export async function GET(request: Request) {
                 cookieStore.set(name, value, options);
               });
             } catch (error) {
+              // Ignore cookie setting errors in server components
             }
           },
         },
@@ -35,6 +36,5 @@ export async function GET(request: Request) {
     }
   }
 
-  // Redirect to login page with an error if verification fails
-  return NextResponse.redirect(new URL('/auth/login?error=verification-failed', requestUrl.origin));
+  return NextResponse.redirect(new URL('/en/auth/login?error=verification-failed', requestUrl.origin));
 }
