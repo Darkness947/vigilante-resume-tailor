@@ -29,9 +29,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, text });
   } catch (error: any) {
-    if (error?.name === 'ZodError') {
-      return NextResponse.json({ error: error.errors?.[0]?.message || 'Validation failed' }, { status: 400 });
+    if (error && error.name === 'ZodError') {
+      const msg = error.errors && error.errors.length > 0 ? error.errors[0].message : 'Validation failed';
+      return NextResponse.json({ error: msg }, { status: 400 });
     }
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error?.message || 'Unknown parsing error occurred' }, { status: 500 });
   }
 }

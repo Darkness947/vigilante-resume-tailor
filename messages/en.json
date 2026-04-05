@@ -1,5 +1,70 @@
 {
   "Index": {
-    "title": "Welcome to VIGILANTE"
+    "title": "VIGILANTE",
+    "subtitle": "Resume Tailor",
+    "hero_line1": "Your Resume.",
+    "hero_line2": "Tailored.",
+    "hero_line3": "Optimized.",
+    "hero_desc": "Upload your resume and a job description. VIGILANTE's AI engine injects missing keywords, restructures content, and compiles an ATS-optimized PDF — in seconds.",
+    "cta_start": "Start Tailoring Free",
+    "cta_signin": "Sign In",
+    "feature_ats": "ATS Score Analysis",
+    "feature_keywords": "Keyword Injection",
+    "feature_pdf": "PDF Compilation",
+    "feature_lang": "Multi-Language",
+    "footer": "VIGILANTE Resume Tailor — Engineered for career operatives."
+  },
+  "Nav": {
+    "signin": "Sign In",
+    "signup": "Get Started",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "settings": "Settings",
+    "signout": "Sign Out"
+  },
+  "Auth": {
+    "login_title": "Sign In",
+    "login_subtitle": "Authenticate to access the Tailoring Engine",
+    "signup_title": "Create Account",
+    "signup_subtitle": "Create your operative account",
+    "email": "Email",
+    "password": "Password",
+    "full_name": "Full Name",
+    "signin_btn": "Sign In",
+    "signup_btn": "Create Account",
+    "no_account": "No account?",
+    "has_account": "Already have an account?",
+    "create_one": "Create one",
+    "verification_sent": "Verification Sent",
+    "verification_desc": "Check your email inbox and click the confirmation link to activate your account.",
+    "return_signin": "Return to Sign In"
+  },
+  "Dashboard": {
+    "title": "Tailor Your Resume",
+    "desc": "Upload your current resume and the target job description. The AI engine will inject critical missing skills.",
+    "upload_label": "System.upload(resume)",
+    "upload_hint": ".PDF or .DOCX format",
+    "job_desc_label": "Target Payload (Job Description)",
+    "job_desc_placeholder": "Paste the job description here...",
+    "strength_label": "Aggressive Injection",
+    "template_label": "Extraction Template",
+    "commence": "Commence Tailoring",
+    "results_title": "Analysis Matrix",
+    "base_match": "Base Match",
+    "new_match": "New Match",
+    "missing_terms": "Critical Missing Terms Interjected",
+    "matched_terms": "Verified Existing Terms",
+    "download_complete": "Document Compilation Complete.",
+    "download_btn": "Download Secure PDF",
+    "awaiting": "AWAITING PAYLOAD INJECTION"
+  },
+  "Settings": {
+    "title": "Settings",
+    "desc": "Manage your account preferences.",
+    "email_label": "Email Address",
+    "name_label": "Display Name",
+    "language_label": "Preferred Language",
+    "save": "Save Changes",
+    "saved": "Saved!"
   }
 }

@@ -23,6 +23,29 @@ export function registerAllFonts() {
       { src: path.join(fontsDir, 'Cairo-Bold.ttf'), fontWeight: 'bold' }
     ]
   });
+
+  // Alias standard fonts to Inter to prevent react-pdf-html crashes
+  Font.register({
+    family: 'Arial',
+    fonts: [
+      { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 'normal' },
+      { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 'bold' }
+    ]
+  });
+  Font.register({
+    family: 'Helvetica',
+    fonts: [
+      { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 'normal' },
+      { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 'bold' }
+    ]
+  });
+  Font.register({
+    family: 'sans-serif',
+    fonts: [
+      { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 'normal' },
+      { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 'bold' }
+    ]
+  });
   
   fontsRegistered = true;
 }

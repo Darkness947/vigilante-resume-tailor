@@ -3,11 +3,14 @@
 import { Link, usePathname, useRouter } from '@/i18n/routing';
 import { createClient } from '@/lib/supabase/client';
 import { useState } from 'react';
+import { LanguageToggle } from '@/components/layout/LanguageToggle';
+import { useTranslations } from 'next-intl';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
+  const n = useTranslations('Nav');
 
   const handleLogout = async () => {
     setLoggingOut(true);
@@ -18,22 +21,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   const navItems = [
-    { href: '/dashboard' as const, label: 'Dashboard', icon: '⊞' },
-    { href: '/admin' as const, label: 'Admin', icon: '⊡' },
+    { href: '/dashboard' as const, label: n('dashboard'), icon: '⊞' },
+    { href: '/dashboard/settings' as const, label: n('settings'), icon: '⚙' },
+    { href: '/admin' as const, label: n('admin'), icon: '⊡' },
   ];
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#071325]">
-      {/* Fixed Sidebar — surface-container-lowest for "recessed" feel */}
+      {/* Fixed Sidebar */}
       <aside className="w-60 bg-[#030e20] hidden md:flex flex-col shrink-0">
-        {/* Brand Header */}
         <div className="h-16 flex items-center px-6">
           <Link href="/dashboard">
-            <span className="font-[var(--font-bebas-neue)] text-2xl text-[#b8c4ff] tracking-widest uppercase hover:opacity-80 transition-opacity cursor-pointer">VIGILANTE</span>
+            <span className="font-[var(--font-bebas-neue)] text-2xl text-[#b8c4ff] tracking-widest uppercase hover:opacity-80 transition-opacity cursor-pointer">{n('dashboard') === 'لوحة التحكم' ? 'فيجيلانتي' : 'VIGILANTE'}</span>
           </Link>
         </div>
 
-        {/* Nav Links */}
         <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
@@ -54,14 +56,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        {/* Logout */}
-        <div className="p-4">
+        {/* Bottom Controls */}
+        <div className="p-4 space-y-2">
+          <LanguageToggle />
           <button
             onClick={handleLogout}
             disabled={loggingOut}
             className="w-full py-2.5 text-xs uppercase tracking-widest font-bold text-[#ffb4ab] bg-[#101c2e] rounded hover:bg-[#1c2024] transition-colors disabled:opacity-50"
           >
-            {loggingOut ? 'Exiting...' : 'Sign Out'}
+            {loggingOut ? '...' : n('signout')}
           </button>
         </div>
       </aside>
@@ -71,15 +74,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <Link href="/dashboard">
           <span className="font-[var(--font-bebas-neue)] text-xl text-[#b8c4ff] tracking-widest uppercase">VIGILANTE</span>
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <LanguageToggle />
           <Link href="/dashboard" className={`text-xs uppercase tracking-widest font-bold ${pathname === '/dashboard' ? 'text-[#6bd8cb]' : 'text-[#737679]'}`}>
-            Dash
+            ⊞
           </Link>
-          <Link href="/admin" className={`text-xs uppercase tracking-widest font-bold ${pathname.startsWith('/admin') ? 'text-[#6bd8cb]' : 'text-[#737679]'}`}>
-            Admin
+          <Link href="/dashboard/settings" className={`text-xs uppercase tracking-widest font-bold ${pathname.startsWith('/dashboard/settings') ? 'text-[#6bd8cb]' : 'text-[#737679]'}`}>
+            ⚙
           </Link>
           <button onClick={handleLogout} className="text-xs text-[#ffb4ab] uppercase tracking-widest font-bold">
-            Out
+            ✕
           </button>
         </div>
       </div>

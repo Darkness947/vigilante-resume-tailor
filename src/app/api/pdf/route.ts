@@ -10,9 +10,12 @@ import { uploadPdfToStorage } from '@/lib/storage';
 export async function POST(req: Request) {
   try {
     registerAllFonts();
-    const { htmlContent, template = 'classic' } = await req.json();
+    let { htmlContent, template = 'classic' } = await req.json();
 
     if (!htmlContent) return NextResponse.json({ error: "Missing htmlContent parameter." }, { status: 400 });
+
+    // Strip font-family declarations that crash react-pdf
+    htmlContent = htmlContent.replace(/font-family\s*:\s*[^;"]+;?/gi, '');
 
     let Component = ClassicTemplate;
     if (template === 'modern') Component = ModernTemplate;

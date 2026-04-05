@@ -28,6 +28,12 @@ export default async function AdminDashboard() {
     redirect('/en/auth/login');
   }
 
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!adminEmail || user.email !== adminEmail) {
+    // Normal users cannot access admin. Rediret to dashboard.
+    redirect('/en/dashboard');
+  }
+
   // Fetch real logs from Supabase using service role if available
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
