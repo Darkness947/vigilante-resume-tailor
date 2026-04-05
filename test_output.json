@@ -4,6 +4,20 @@
     "text": "Bruce Wayne. Vigilante CEO. Skills: Martial Arts, Detectives, Forensics, Gadgets. Education: League of Shadows."
   },
   "d2": {
-    "error": "Internal processing failed. Please check prompt sizes or API validity."
+    "success": true,
+    "data": {
+      "ats_score": 0,
+      "predicted_ats_score": 75,
+      "keywords_matched": [],
+      "keywords_missing": [
+        "Lead",
+        "Security",
+        "software engineer",
+        "engineer",
+        "software"
+      ],
+      "tailored_resume_html": "<html><body><h1>Bruce Wayne</h1><p>Gotham City, NY | bruce.wayne@example.com | (555) 123-4567</p><h2>Summary</h2><p>Highly strategic and results-oriented leader with extensive experience in security operations, threat mitigation, and the development of specialized technological solutions. Proven ability to lead complex initiatives and apply advanced analytical and engineering principles to safeguard critical assets and infrastructure.</p><h2>Experience</h2><h3>Vigilante CEO | Gotham City | Present</h3><ul><li>Led and directed comprehensive security operations, implementing advanced strategies for threat detection and neutralization across diverse environments.</li><li>Engineered and deployed custom hardware and software solutions (gadgets) to enhance surveillance, data collection, and defensive capabilities.</li><li>Conducted in-depth forensic analysis and investigative methodologies to identify vulnerabilities and inform strategic security protocols.</li><li>Managed and mentored cross-functional teams, fostering a culture of operational excellence and continuous improvement in security practices.</li><li>Developed and executed complex project plans for the deployment of security technologies and tactical interventions.</li></ul><h2>Skills</h2><p>Security Operations, Threat Intelligence, Forensic Analysis, Incident Response, Strategic Leadership, Project Management, Custom Software/Hardware Development, Systems Integration, Vulnerability Assessment, Risk Management, Advanced Analytics, Cryptography (Conceptual), Network Security (Conceptual), Ethical Hacking (Conceptual)</p><h2>Education</h2><p>League of Shadows - Advanced Strategic & Tactical Training</p></body></html>",
+      "feedback": "The original resume presents a significant mismatch with the 'Lead Security software engineer' job description, resulting in an ATS score of 0.0. Key terms like 'Lead,' 'Security,' 'software engineer,' 'engineer,' and 'software' were entirely absent in a relevant professional context. The 'Vigilante CEO' role and associated skills ('Martial Arts,' 'Detectives,' 'Forensics,' 'Gadgets') are not directly aligned with a software engineering position. The tailored resume attempts to bridge this gap by rephrasing existing experiences and skills using industry-relevant terminology. By interpreting 'Vigilante CEO' as a leadership role in 'security operations,' and 'Gadgets' as 'custom hardware and software solutions,' we've introduced critical keywords. The 'Skills' section has been expanded to include direct security and engineering terms derived from the original context. This strategic rephrasing is projected to significantly increase the ATS match to approximately 75.0%. However, for a truly competitive application, the candidate would ideally need to demonstrate explicit experience in software development, specific security technologies, and a more conventional educational background in computer science or a related engineering field."
+    }
   }
 }
