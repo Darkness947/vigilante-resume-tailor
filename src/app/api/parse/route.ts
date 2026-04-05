@@ -29,8 +29,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, text });
   } catch (error: any) {
-    if (error.name === 'ZodError') {
-      return NextResponse.json({ error: error.errors[0].message }, { status: 400 });
+    if (error?.name === 'ZodError') {
+      return NextResponse.json({ error: error.errors?.[0]?.message || 'Validation failed' }, { status: 400 });
     }
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

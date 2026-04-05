@@ -5,6 +5,7 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   /* config options here */
+  serverExternalPackages: ['pdf-parse', 'mammoth']
 };
 
 export default withNextIntl(nextConfig);

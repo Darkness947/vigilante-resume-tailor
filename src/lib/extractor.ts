@@ -1,5 +1,8 @@
-import pdfParse from 'pdf-parse';
+import { Buffer } from 'buffer';
 import * as mammoth from 'mammoth';
+
+// @ts-ignore
+import pdfParse from 'pdf-parse';
 
 export async function extractTextFromFile(file: File): Promise<string> {
   const buffer = Buffer.from(await file.arrayBuffer());
