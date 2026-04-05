@@ -1,0 +1,65 @@
+
+> temp_app@0.1.0 build
+> next build
+
+▲ Next.js 16.2.2 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+Error: Can't resolve 'tailwindcss-animate' in 'C:\Projects\vigilante-resume-tailor\src\app'
+    [2m[at finishWithoutResolve (C:\Projects\vigilante-resume-tailor\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\vigilante-resume-tailor\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\vigilante-resume-tailor\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\vigilante-resume-tailor\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\vigilante-resume-tailor\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\vigilante-resume-tailor\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at C:\Projects\vigilante-resume-tailor\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:89:43][0m
+    [2m[at C:\Projects\vigilante-resume-tailor\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\vigilante-resume-tailor\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\vigilante-resume-tailor\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m {
+  details: "resolve 'tailwindcss-animate' in 'C:\\Projects\\vigilante-resume-tailor\\src\\app'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: C:\\Projects\\vigilante-resume-tailor\\package.json (relative path: ./src/app)\n' +
+    '    resolve as module\n' +
+    "      C:\\Projects\\vigilante-resume-tailor\\src\\app\\node_modules doesn't exist or is not a directory\n" +
+    "      C:\\Projects\\vigilante-resume-tailor\\src\\node_modules doesn't exist or is not a directory\n" +
+    '      looking for modules in C:\\Projects\\vigilante-resume-tailor\\node_modules\n' +
+    '        single file module\n' +
+    '          using description file: C:\\Projects\\vigilante-resume-tailor\\package.json (relative path: ./node_modules/tailwindcss-animate)\n' +
+    '            no extension\n' +
+    "              C:\\Projects\\vigilante-resume-tailor\\node_modules\\tailwindcss-animate doesn't exist\n" +
+    '            .js\n' +
+    "              C:\\Projects\\vigilante-resume-tailor\\node_modules\\tailwindcss-animate.js doesn't exist\n" +
+    '            .json\n' +
+    "              C:\\Projects\\vigilante-resume-tailor\\node_modules\\tailwindcss-animate.json doesn't exist\n" +
+    '            .node\n' +
+    "              C:\\Projects\\vigilante-resume-tailor\\node_modules\\tailwindcss-animate.node doesn't exist\n" +
+    '            .ts\n' +
+    "              C:\\Projects\\vigilante-resume-tailor\\node_modules\\tailwindcss-animate.ts doesn't exist\n" +
+    "        C:\\Projects\\vigilante-resume-tailor\\node_modules\\tailwindcss-animate doesn't exist\n" +
+    "      C:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "      C:\\node_modules doesn't exist or is not a directory"
+}
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./src/app/globals.css
+Error evaluating Node.js code
+CssSyntaxError: tailwindcss: C:\Projects\vigilante-resume-tailor\src\app\globals.css:1:1: Can't resolve 'tailwindcss-animate' in 'C:\Projects\vigilante-resume-tailor\src\app'
+    at Input.error (node_modules/postcss/lib/input.js:135:16) [C:\Projects\vigilante-resume-tailor\.next\build\chunks\node_modules_13sb.px._.js:4651:22]
+    at error (node_modules/postcss/lib/node.js:146:32) [C:\Projects\vigilante-resume-tailor\.next\build\chunks\node_modules_13sb.px._.js:928:38]
+    [at Object.Once (C:\Projects\vigilante-resume-tailor\node_modules\@tailwindcss\postcss\dist\index.js:10:6913)]
+    at async LazyResult.runAsync (node_modules/postcss/lib/lazy-result.js:293:11) [C:\Projects\vigilante-resume-tailor\.next\build\chunks\node_modules_13sb.px._.js:6214:21]
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [C:\Projects\vigilante-resume-tailor\.next\build\chunks\[root-of-the-server]__0d-m0h0._.js:146:36]
+    at async run (turbopack:///[turbopack-node]/child_process/evaluate.ts:89:23) [C:\Projects\vigilante-resume-tailor\.next\build\chunks\[root-of-the-server]__0ubbtyl._.js:443:31]
+
+Import trace:
+  Client Component Browser:
+    ./src/app/globals.css [Client Component Browser]
+    ./src/app/[locale]/layout.tsx [Server Component]
+
+
+    at async transform (turbopack:///[turbopack-node]/transforms/postcss.ts:70:34) [C:\Projects\vigilante-resume-tailor\.next\build\chunks\[root-of-the-server]__0d-m0h0._.js:146:36])
+    at async run (turbopack:///[turbopack-node]/child_process/evaluate.ts:89:23) [C:\Projects\vigilante-resume-tailor\.next\build\chunks\[root-of-the-server]__0ubbtyl._.js:443:31])

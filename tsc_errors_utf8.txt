@@ -1,0 +1,8 @@
+﻿.next/types/validator.ts(24,44): error TS2344: Type 'Route' does not satisfy the constraint '"/[locale]"'.
+  Type '"/"' is not assignable to type '"/[locale]"'.
+.next/types/validator.ts(24,75): error TS2344: Type 'Route' does not satisfy the constraint '"/[locale]"'.
+  Type '"/"' is not assignable to type '"/[locale]"'.
+.next/types/validator.ts(42,39): error TS2307: Cannot find module '../../src/app/page.js' or its corresponding type declarations.
+.next/types/validator.ts(57,39): error TS2307: Cannot find module '../../src/app/layout.js' or its corresponding type declarations.
+tests/setup/playwright.config.ts(1,39): error TS2307: Cannot find module '@playwright/test' or its corresponding type declarations.
+tests/setup/vitest.config.ts(1,30): error TS2307: Cannot find module 'vitest/config' or its corresponding type declarations.
