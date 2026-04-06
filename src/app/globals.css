@@ -6,10 +6,10 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   
-  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-bebas-neue), ui-sans-serif, system-ui;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: "VigilanteSans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "VigilanteSans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "VigilanteSans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -161,6 +161,10 @@
   .mono-font {
     @apply font-mono;
   }
+}
+
+html:lang(ar) .display-font {
+  letter-spacing: normal;
 }
 
 @layer utilities {

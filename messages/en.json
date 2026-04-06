@@ -66,5 +66,22 @@
     "language_label": "Preferred Language",
     "save": "Save Changes",
     "saved": "Saved!"
+  },
+  "HowTo": {
+    "eyebrow": "How it works",
+    "title": "Three steps to a stronger resume",
+    "subtitle": "Fast, practical, and designed for ATS—without inventing experience.",
+    "step1": {
+      "title": "Upload your resume",
+      "desc": "PDF, DOCX, or TXT. We extract text safely and prepare it for tailoring."
+    },
+    "step2": {
+      "title": "Paste the job description",
+      "desc": "We identify missing keywords and align your content to match the role."
+    },
+    "step3": {
+      "title": "Generate and download",
+      "desc": "Review ATS scores, keywords, and download a clean PDF template."
+    }
   }
 }

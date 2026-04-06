@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useId } from 'react';
+import React, { useEffect, useId } from 'react';
 import { useResumeTailor } from '@/hooks/useResumeTailor';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Link } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
 
 function ScoreBar({ label, value }: { label: string; value: number }) {
   const safe = Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : 0;
@@ -31,12 +33,14 @@ function ScoreBar({ label, value }: { label: string; value: number }) {
 export default function DashboardPage() {
   const fileId = useId();
   const jdId = useId();
+  const locale = useLocale();
 
   const {
     file,
     setFile,
     jobDescription,
     setJobDescription,
+    setLanguage,
     strength,
     setStrength,
     template,
@@ -50,14 +54,25 @@ export default function DashboardPage() {
 
   const canRun = Boolean(file && jobDescription && !isProcessing);
 
+  useEffect(() => {
+    setLanguage(locale === 'ar' ? 'ar' : 'en');
+  }, [locale, setLanguage]);
+
   return (
     <div className="mx-auto w-full max-w-6xl space-y-6 p-6 lg:p-10">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-semibold tracking-tight">Resume tailoring</h1>
-        <p className="max-w-2xl text-sm text-muted-foreground">
-          Upload your resume and paste a job description. The engine will optimize content for ATS while
-          keeping your experience truthful.
-        </p>
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-semibold tracking-tight">Resume tailoring</h1>
+          <p className="max-w-2xl text-sm text-muted-foreground">
+            Upload your resume and paste a job description. The engine will optimize content for ATS while
+            keeping your experience truthful.
+          </p>
+        </div>
+        <Link href="/" className="block">
+          <Button type="button" variant="outline">
+            Back to home
+          </Button>
+        </Link>
       </header>
 
       <div className="grid gap-6 lg:grid-cols-2 lg:items-start">

@@ -29,10 +29,10 @@ export function AppShell({ children, isAdmin }: { children: React.ReactNode; isA
   return (
     <div className="flex h-screen overflow-hidden bg-[#071325]">
       {/* Fixed Sidebar */}
-      <aside className="w-60 bg-[#030e20] hidden md:flex flex-col shrink-0">
+      <aside className="w-60 bg-surface-lowest hidden md:flex flex-col shrink-0">
         <div className="h-16 flex items-center px-6">
           <Link href="/dashboard">
-            <span className="font-[var(--font-bebas-neue)] text-2xl text-[#b8c4ff] tracking-widest uppercase hover:opacity-80 transition-opacity cursor-pointer">{n('dashboard') === 'لوحة التحكم' ? 'فيجيلانتي' : 'VIGILANTE'}</span>
+            <span className="display-font text-2xl text-[#b8c4ff] tracking-widest hover:opacity-80 transition-opacity cursor-pointer">{n('dashboard') === 'لوحة التحكم' ? 'فيجيلانتي' : 'VIGILANTE'}</span>
           </Link>
         </div>
 
@@ -45,8 +45,8 @@ export function AppShell({ children, isAdmin }: { children: React.ReactNode; isA
                 href={item.href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-md text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-[#101c2e] text-[#6bd8cb]'
-                    : 'text-[#737679] hover:text-[#d7e3fc] hover:bg-[#101c2e]'
+                    ? 'bg-surface-low text-[#6bd8cb]'
+                    : 'text-[#737679] hover:text-[#d7e3fc] hover:bg-surface-low'
                 }`}
               >
                 <span className="text-base">{item.icon}</span>
@@ -62,7 +62,7 @@ export function AppShell({ children, isAdmin }: { children: React.ReactNode; isA
           <button
             onClick={handleLogout}
             disabled={loggingOut}
-            className="w-full py-2.5 text-xs uppercase tracking-widest font-bold text-[#ffb4ab] bg-[#101c2e] rounded hover:bg-[#1c2024] transition-colors disabled:opacity-50"
+            className="w-full py-2.5 text-xs uppercase tracking-widest font-bold text-[#ffb4ab] bg-surface-low rounded hover:bg-[#1c2024] transition-colors disabled:opacity-50"
           >
             {loggingOut ? '...' : n('signout')}
           </button>
@@ -70,9 +70,9 @@ export function AppShell({ children, isAdmin }: { children: React.ReactNode; isA
       </aside>
 
       {/* Mobile Top Bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#030e20] h-14 flex items-center justify-between px-4">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-surface-lowest h-14 flex items-center justify-between px-4">
         <Link href="/dashboard">
-          <span className="font-[var(--font-bebas-neue)] text-xl text-[#b8c4ff] tracking-widest uppercase">VIGILANTE</span>
+          <span className="display-font text-xl text-[#b8c4ff] tracking-widest">VIGILANTE</span>
         </Link>
         <div className="flex items-center gap-2">
           <LanguageToggle />

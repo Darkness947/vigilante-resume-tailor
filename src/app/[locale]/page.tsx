@@ -1,135 +1,155 @@
 "use client";
 
-import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { LanguageToggle } from '@/components/layout/LanguageToggle';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { motion, useReducedMotion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
+
+function HowToUse() {
+  const t = useTranslations('HowTo');
+  const shouldReduceMotion = useReducedMotion();
+
+  const steps = [
+    { k: 'step1', n: '01' },
+    { k: 'step2', n: '02' },
+    { k: 'step3', n: '03' },
+  ] as const;
+
+  return (
+    <section className="mx-auto w-full max-w-6xl px-6 py-16 lg:px-16">
+      <motion.div
+        initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+        whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-10% 0px' }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        className="mb-10 flex flex-col gap-2"
+      >
+        <p className="text-sm font-medium text-muted-foreground">{t('eyebrow')}</p>
+        <h2 className="text-3xl font-semibold tracking-tight">{t('title')}</h2>
+        <p className="max-w-2xl text-sm text-muted-foreground">{t('subtitle')}</p>
+      </motion.div>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        {steps.map((s, idx) => (
+          <motion.div
+            key={s.k}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
+            whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10% 0px' }}
+            transition={{ duration: 0.45, delay: idx * 0.08, ease: 'easeOut' }}
+          >
+            <Card className="shadow-ambient">
+              <CardHeader className="flex-row items-center justify-between">
+                <CardTitle className="text-base">{t(`${s.k}.title`)}</CardTitle>
+                <span className="mono-font text-xs text-muted-foreground">{s.n}</span>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">{t(`${s.k}.desc`)}</p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   const t = useTranslations('Index');
   const n = useTranslations('Nav');
+  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="min-h-screen bg-[#071325] text-[#d7e3fc] flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0 }}
+          animate={shouldReduceMotion ? undefined : { opacity: 1 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="absolute -top-32 inset-s-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-secondary/10 blur-3xl"
+        />
+        <motion.div
+          initial={shouldReduceMotion ? false : { opacity: 0 }}
+          animate={shouldReduceMotion ? undefined : { opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
+          className="absolute -bottom-32 inset-s-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-primary/10 blur-3xl"
+        />
+      </div>
 
-      {/* ── Navigation Bar ── */}
-      <nav className="flex items-center justify-between px-6 lg:px-16 py-5 relative z-10">
-        <span className="font-[var(--font-bebas-neue)] text-2xl text-[#b8c4ff] tracking-[0.2em] uppercase">{t('title')}</span>
+      <nav className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-5 lg:px-16">
+        <span className="display-font text-lg text-primary">{t('title')}</span>
         <div className="flex items-center gap-3">
           <LanguageToggle />
-          <Link
-            href="/auth/login"
-            className="text-sm text-[#a9abaf] hover:text-[#d7e3fc] uppercase tracking-widest transition-colors hidden sm:inline"
-          >
-            {n('signin')}
+          <Link href="/auth/login" className="hidden sm:block">
+            <Button type="button" variant="ghost">
+              {n('signin')}
+            </Button>
           </Link>
-          <Link
-            href="/auth/signup"
-            className="text-sm px-5 py-2.5 bg-gradient-to-r from-[#00C2CB] to-[#008B8B] text-white uppercase tracking-widest font-bold rounded hover:opacity-90 transition-opacity"
-          >
-            {n('signup')}
+          <Link href="/auth/signup" className="block">
+            <Button type="button">{n('signup')}</Button>
           </Link>
         </div>
       </nav>
 
-      {/* ── Hero Section ── */}
-      <main className="flex-1 flex items-center justify-center px-6 lg:px-16 relative">
-        {/* Background glow effects */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#6bd8cb] rounded-full opacity-[0.03] blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#b8c4ff] rounded-full opacity-[0.04] blur-[120px] pointer-events-none" />
-
-        <div className="max-w-4xl text-center space-y-10 relative z-10">
-
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#101c2e] text-[#6bd8cb] text-xs uppercase tracking-widest font-bold font-mono rounded-sm animate-pulse">
-            <span className="w-2 h-2 bg-[#6bd8cb] rounded-full" />
-            AI-Powered ATS Optimization Engine
-          </div>
-
-          {/* Main Headline */}
-          <h1 className="text-5xl sm:text-6xl md:text-8xl font-black uppercase tracking-tight leading-[0.9]">
-            <span className="block text-[#d7e3fc] opacity-0 animate-[fadeInUp_0.6s_ease_0.1s_forwards]">{t('hero_line1')}</span>
-            <span className="block text-[#6bd8cb] opacity-0 animate-[fadeInUp_0.6s_ease_0.3s_forwards]">{t('hero_line2')}</span>
-            <span className="block text-[#b8c4ff] opacity-0 animate-[fadeInUp_0.6s_ease_0.5s_forwards]">{t('hero_line3')}</span>
-          </h1>
-
-          {/* Sub-headline */}
-          <p className="text-base sm:text-lg text-[#a9abaf] max-w-2xl mx-auto leading-relaxed opacity-0 animate-[fadeInUp_0.6s_ease_0.7s_forwards]">
-            {t('hero_desc')}
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2 opacity-0 animate-[fadeInUp_0.6s_ease_0.9s_forwards]">
-            <Link
-              href="/auth/signup"
-              className="group px-8 py-4 bg-gradient-to-r from-[#00C2CB] to-[#008B8B] text-white text-sm uppercase tracking-widest font-bold rounded hover:shadow-[0_0_32px_rgba(0,194,203,0.3)] transition-all"
-            >
-              <span className="group-hover:tracking-[0.3em] transition-all">{t('cta_start')}</span>
-            </Link>
-            <Link
-              href="/auth/login"
-              className="px-8 py-4 bg-[#101c2e] text-[#b8c4ff] text-sm uppercase tracking-widest font-bold rounded hover:bg-[#1c2024] transition-colors"
-            >
-              {t('cta_signin')}
-            </Link>
-          </div>
-
-          {/* Feature Row */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-10 opacity-0 animate-[fadeInUp_0.6s_ease_1.1s_forwards]">
-            {[t('feature_ats'), t('feature_keywords'), t('feature_pdf'), t('feature_lang')].map((feature) => (
-              <span key={feature} className="px-4 py-2 bg-[#101c2e] text-[#737679] text-xs uppercase tracking-widest font-mono rounded-sm hover:text-[#6bd8cb] hover:bg-[#142032] transition-colors cursor-default">
-                {feature}
-              </span>
-            ))}
-          </div>
-
-          {/* Stats Row */}
-          <div className="grid grid-cols-3 gap-6 max-w-md mx-auto pt-8 opacity-0 animate-[fadeInUp_0.6s_ease_1.3s_forwards]">
-            <div className="text-center">
-              <p className="text-2xl font-bold font-mono text-[#6bd8cb]">95%</p>
-              <p className="text-[10px] text-[#45474c] uppercase tracking-widest mt-1">ATS Pass Rate</p>
+      <main className="relative z-10">
+        <section className="mx-auto w-full max-w-6xl px-6 pb-6 pt-10 lg:px-16 lg:pt-16">
+          <motion.div
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+            animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, ease: 'easeOut' }}
+            className="mx-auto flex max-w-3xl flex-col items-center gap-6 text-center"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-2 text-xs text-muted-foreground shadow-ambient">
+              <span className="size-2 rounded-full bg-secondary" />
+              <span className="mono-font">{t('feature_ats')}</span>
             </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold font-mono text-[#b8c4ff]">3s</p>
-              <p className="text-[10px] text-[#45474c] uppercase tracking-widest mt-1">Avg Tailor Time</p>
+
+            <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+              <span className="block">{t('hero_line1')}</span>
+              <span className="block text-secondary">{t('hero_line2')}</span>
+              <span className="block text-primary">{t('hero_line3')}</span>
+            </h1>
+
+            <p className="text-pretty text-base text-muted-foreground sm:text-lg">
+              {t('hero_desc')}
+            </p>
+
+            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+              <Link href="/auth/signup" className="block">
+                <Button className="w-full sm:w-auto">{t('cta_start')}</Button>
+              </Link>
+              <Link href="/auth/login" className="block">
+                <Button variant="outline" className="w-full sm:w-auto">
+                  {t('cta_signin')}
+                </Button>
+              </Link>
             </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold font-mono text-[#6bd8cb]">EN/AR</p>
-              <p className="text-[10px] text-[#45474c] uppercase tracking-widest mt-1">Languages</p>
-            </div>
-          </div>
-        </div>
+          </motion.div>
+        </section>
+
+        <HowToUse />
+
+        <section className="mx-auto w-full max-w-6xl px-6 pb-14 lg:px-16">
+          <Card className="shadow-ambient">
+            <CardHeader>
+              <CardTitle>{t('footer')}</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-muted-foreground">{t('hero_desc')}</p>
+              <div className="flex flex-wrap gap-2">
+                <Link href="/auth/login" className="block">
+                  <Button variant="ghost">{n('signin')}</Button>
+                </Link>
+                <Link href="/auth/signup" className="block">
+                  <Button>{n('signup')}</Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
       </main>
-
-      {/* ── Footer ── */}
-      <footer className="py-8 px-6 lg:px-16">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[#45474c] uppercase tracking-widest">
-            {t('footer')}
-          </p>
-          <div className="flex items-center gap-6">
-            <Link href="/auth/login" className="text-xs text-[#45474c] hover:text-[#737679] uppercase tracking-widest transition-colors">
-              {n('signin')}
-            </Link>
-            <Link href="/auth/signup" className="text-xs text-[#45474c] hover:text-[#737679] uppercase tracking-widest transition-colors">
-              {n('signup')}
-            </Link>
-          </div>
-        </div>
-      </footer>
-
-      {/* Keyframe animations */}
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(24px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div>
   );
 }
