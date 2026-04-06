@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from '@/i18n/routing';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 export default function LoginPage() {
-  const t = useTranslations('Index');
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,68 +38,69 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#071325] p-6">
-      <div className="w-full max-w-md space-y-8">
-
-        {/* Brand Mark */}
-        <div className="text-center">
-          <Link href="/">
-            <h1 className="font-[var(--font-bebas-neue)] text-5xl text-[#b8c4ff] tracking-widest uppercase cursor-pointer hover:opacity-80 transition-opacity">VIGILANTE</h1>
+    <div className="min-h-screen bg-background">
+      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-6 py-10">
+        <div className="mb-8 text-center">
+          <Link href="/" className="inline-flex items-center justify-center">
+            <span className="display-font text-4xl text-primary">VIGILANTE</span>
           </Link>
-          <p className="text-[#a9abaf] text-sm mt-2">Authenticate to access the Tailoring Engine</p>
-        </div>
-
-        {/* Login Card */}
-        <div className="bg-[#101c2e] p-8 rounded-lg space-y-6">
-          <h2 className="text-xl font-bold text-[#d7e3fc] tracking-wide uppercase">Sign In</h2>
-
-          {error && (
-            <div className="bg-[#360001] text-[#ffb4ab] text-sm p-3 rounded">
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleLogin} className="flex flex-col gap-5">
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold uppercase tracking-widest text-[#a9abaf]">Email</label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="operative@vigilante.io"
-                className="h-12 bg-[#1c2024] text-[#d7e3fc] px-4 text-sm outline-none rounded border-b-2 border-transparent focus:border-[#6bd8cb] transition-colors placeholder:text-[#45474c]"
-              />
-            </div>
-
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-bold uppercase tracking-widest text-[#a9abaf]">Password</label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="h-12 bg-[#1c2024] text-[#d7e3fc] px-4 text-sm outline-none rounded border-b-2 border-transparent focus:border-[#6bd8cb] transition-colors placeholder:text-[#45474c]"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="h-12 bg-gradient-to-r from-[#00C2CB] to-[#008B8B] text-white uppercase tracking-widest text-sm font-bold rounded hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-            >
-              {loading ? 'Authenticating...' : 'Sign In'}
-            </button>
-          </form>
-
-          <p className="text-center text-sm text-[#737679]">
-            No account?{' '}
-            <Link href="/auth/signup" className="text-[#6bd8cb] hover:underline">
-              Create one
-            </Link>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Sign in to access the tailoring engine.
           </p>
         </div>
+
+        <Card className="shadow-ambient">
+          <CardHeader>
+            <CardTitle>Sign in</CardTitle>
+            <CardDescription>Use your email and password.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {error ? (
+              <div className="mb-4 rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {error}
+              </div>
+            ) : null}
+
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@company.com"
+                  autoComplete="email"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                />
+              </div>
+
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? 'Signing in…' : 'Sign in'}
+              </Button>
+            </form>
+
+            <p className="mt-6 text-center text-sm text-muted-foreground">
+              No account?{' '}
+              <Link href="/auth/signup" className="font-medium text-foreground underline underline-offset-4">
+                Create one
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

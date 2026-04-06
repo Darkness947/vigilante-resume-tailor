@@ -9,6 +9,7 @@ export function useResumeTailor() {
     
     const [isProcessing, setIsProcessing] = useState(false);
     const [progressStep, setProgressStep] = useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [result, setResult] = useState<any>(null);
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
@@ -24,7 +25,14 @@ export function useResumeTailor() {
             formData.append('file', file);
             
             const parseRes = await fetch('/api/parse', { method: 'POST', body: formData });
-            if (!parseRes.ok) throw new Error("Parsing failed");
+            if (!parseRes.ok) {
+                let msg = "Parsing failed";
+                try {
+                    const err = await parseRes.json();
+                    msg = err?.error || msg;
+                } catch {}
+                throw new Error(msg);
+            }
             const parseData = await parseRes.json();
 
             setProgressStep('Tailoring with AI Engine...');
@@ -54,11 +62,19 @@ export function useResumeTailor() {
                     template
                 })
             });
-            if (!pdfRes.ok) throw new Error("PDF Compilation failed");
+            if (!pdfRes.ok) {
+                let msg = "PDF Compilation failed";
+                try {
+                    const err = await pdfRes.json();
+                    msg = err?.error || msg;
+                } catch {}
+                throw new Error(msg);
+            }
             const pdfData = await pdfRes.json();
             
             setPdfUrl(pdfData.url);
             setProgressStep('Completed Successfully');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             console.error(err);
             setProgressStep(`Error: ${err.message}`);

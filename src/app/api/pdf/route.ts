@@ -10,22 +10,24 @@ import { uploadPdfToStorage } from '@/lib/storage';
 export async function POST(req: Request) {
   try {
     registerAllFonts();
-    let { htmlContent, template = 'classic' } = await req.json();
+    const { htmlContent: rawHtmlContent, template = 'classic' } = await req.json();
 
-    if (!htmlContent) return NextResponse.json({ error: "Missing htmlContent parameter." }, { status: 400 });
+    if (!rawHtmlContent) {
+      return NextResponse.json({ error: "Missing htmlContent parameter." }, { status: 400 });
+    }
 
     // Strip font-family declarations that crash react-pdf
-    htmlContent = htmlContent.replace(/font-family\s*:\s*[^;"]+;?/gi, '');
+    const htmlContent = String(rawHtmlContent).replace(/font-family\s*:\s*[^;"]+;?/gi, '');
 
     let Component = ClassicTemplate;
     if (template === 'modern') Component = ModernTemplate;
     if (template === 'arabic-rtl') Component = ArabicRtlTemplate;
 
     // React-PDF expects a node stream, so we must buffer it manually.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const stream = await renderToStream(React.createElement(Component, { htmlContent }) as any);
     const chunks: Buffer[] = [];
     
-    // @ts-ignore (async iteration over stream)
     for await (const chunk of stream) {
       chunks.push(Buffer.from(chunk));
     }
@@ -40,6 +42,7 @@ export async function POST(req: Request) {
 
     const signedUrl = await uploadPdfToStorage(pdfBuffer, 'resume');
     return NextResponse.json({ success: true, url: signedUrl });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error('[PDF Gen Error]', error);
     return NextResponse.json({ error: 'PDF generation failed. Please see server logs.' }, { status: 500 });

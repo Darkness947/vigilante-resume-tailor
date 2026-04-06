@@ -8,10 +8,14 @@ export async function POST(req: Request) {
     const ip = req.headers.get('x-forwarded-for') || 'anonymous';
     
     // In strict dev environment, upstash might fail without valid keys, so wrap it gracefully:
-    if (process.env.UPSTASH_REDIS_REST_URL) {
-      const { success } = await ratelimit.limit(ip);
-      if (!success) {
-        return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+    if (ratelimit) {
+      try {
+        const { success } = await ratelimit.limit(ip);
+        if (!success) {
+          return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+        }
+      } catch (e) {
+        console.warn('[Parse API] Ratelimit skipped due to Upstash error.', e);
       }
     }
 
@@ -28,6 +32,7 @@ export async function POST(req: Request) {
     const text = await extractTextFromFile(file as File);
 
     return NextResponse.json({ success: true, text });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error && error.name === 'ZodError') {
       const msg = error.errors && error.errors.length > 0 ? error.errors[0].message : 'Validation failed';

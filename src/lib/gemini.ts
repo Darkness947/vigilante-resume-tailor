@@ -2,6 +2,14 @@ import { AtsTailorResponseSchema, type AtsTailorResponse } from './validation';
 // Note: Depending on the specific "@google/genai" library or the fetch REST API used for gemini, implementation varies.
 // We are using the standard fetch-based approach for Gemini 1.5 Flash via REST for complete control over system instructions and JSON schemas.
 
+function stripJsonFences(input: string) {
+  return input
+    .trim()
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/```$/i, '')
+    .trim();
+}
+
 export async function tailorResume(
   originalResume: string,
   jobDescription: string,
@@ -61,6 +69,15 @@ export async function tailorResume(
     throw new Error("Unable to extract valid response parts from Gemini API.");
   }
 
-  const validatedData = AtsTailorResponseSchema.parse(JSON.parse(rawDataStr));
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(stripJsonFences(String(rawDataStr)));
+  } catch (e) {
+    throw new Error(
+      `Gemini returned non-JSON output. ${(e as Error).message}`
+    );
+  }
+
+  const validatedData = AtsTailorResponseSchema.parse(parsed);
   return validatedData;
 }

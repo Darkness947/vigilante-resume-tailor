@@ -6,10 +6,14 @@ export async function POST(req: Request) {
   try {
     const ip = req.headers.get('x-forwarded-for') || 'anonymous';
     
-    if (process.env.UPSTASH_REDIS_REST_URL) {
-      const { success } = await ratelimit.limit(ip);
-      if (!success) {
-        return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+    if (ratelimit) {
+      try {
+        const { success } = await ratelimit.limit(ip);
+        if (!success) {
+          return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+        }
+      } catch (e) {
+        console.warn('[Tailor API] Ratelimit skipped due to Upstash error.', e);
       }
     }
 
@@ -27,9 +31,15 @@ export async function POST(req: Request) {
     );
 
     return NextResponse.json({ success: true, data: result });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    // Admin requirement: "No raw resume text... exposed into an Admin API response" - ensured by generic logging.
-    console.error('[Gemini Tailor API]', error.message);
+    const message = typeof error?.message === 'string' ? error.message : 'Unknown error';
+    console.error('[Gemini Tailor API]', message);
+
+    if (message.includes('GEMINI_API_KEY')) {
+      return NextResponse.json({ error: "AI is not configured (missing GEMINI_API_KEY)." }, { status: 500 });
+    }
+
     return NextResponse.json({ error: "Internal processing failed. Please check prompt sizes or API validity." }, { status: 500 });
   }
 }

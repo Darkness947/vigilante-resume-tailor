@@ -1,8 +1,7 @@
 import * as z from 'zod';
 
-export const MAX_FILE_SIZE = process.env.MAX_FILE_SIZE_BYTES 
-  ? parseInt(process.env.MAX_FILE_SIZE_BYTES) 
-  : 5242880;
+const parsedMax = process.env.MAX_FILE_SIZE_BYTES ? Number(process.env.MAX_FILE_SIZE_BYTES) : NaN;
+export const MAX_FILE_SIZE = Number.isFinite(parsedMax) && parsedMax > 0 ? parsedMax : 5242880;
 
 export const ALLOWED_MIME_TYPES = [
   'application/pdf',
@@ -10,11 +9,27 @@ export const ALLOWED_MIME_TYPES = [
   'text/plain',
 ];
 
+const BY_EXTENSION_MIME: Record<string, string> = {
+  pdf: 'application/pdf',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  txt: 'text/plain',
+};
+
+function inferMimeType(file: File | Blob) {
+  const anyFile = file as File;
+  const name = typeof anyFile.name === 'string' ? anyFile.name : '';
+  const ext = name.includes('.') ? name.split('.').pop()?.toLowerCase() : undefined;
+  return ext ? BY_EXTENSION_MIME[ext] : undefined;
+}
+
 export const fileValidationSchema = z.object({
   file: z.any()
     .refine((file) => file instanceof Blob || file instanceof File, "Missing file payload.")
     .refine((file) => file.size <= MAX_FILE_SIZE, `File size MUST be less than ${MAX_FILE_SIZE / 1024 / 1024}MB.`)
-    .refine((file) => ALLOWED_MIME_TYPES.includes(file.type), "Unsupported file type. Please upload a PDF or DOCX."),
+    .refine((file) => {
+      const fileType = (file as File).type || inferMimeType(file as File);
+      return Boolean(fileType && ALLOWED_MIME_TYPES.includes(fileType));
+    }, "Unsupported file type. Please upload a PDF or DOCX."),
 });
 
 // Zod Schema representing the structured JSON ATS Output from Gemini
