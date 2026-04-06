@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { LanguageToggle } from '@/components/layout/LanguageToggle';
 import { useTranslations } from 'next-intl';
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({ children, isAdmin }: { children: React.ReactNode; isAdmin?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
@@ -23,8 +23,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const navItems = [
     { href: '/dashboard' as const, label: n('dashboard'), icon: '⊞' },
     { href: '/dashboard/settings' as const, label: n('settings'), icon: '⚙' },
-    { href: '/admin' as const, label: n('admin'), icon: '⊡' },
-  ];
+    ...(isAdmin ? [{ href: '/admin' as const, label: n('admin'), icon: '⊡' }] : []),
+  ] as const;
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#071325]">
@@ -82,6 +82,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <Link href="/dashboard/settings" className={`text-xs uppercase tracking-widest font-bold ${pathname.startsWith('/dashboard/settings') ? 'text-[#6bd8cb]' : 'text-[#737679]'}`}>
             ⚙
           </Link>
+          {isAdmin ? (
+            <Link href="/admin" className={`text-xs uppercase tracking-widest font-bold ${pathname.startsWith('/admin') ? 'text-[#6bd8cb]' : 'text-[#737679]'}`}>
+              ⊡
+            </Link>
+          ) : null}
           <button onClick={handleLogout} className="text-xs text-[#ffb4ab] uppercase tracking-widest font-bold">
             ✕
           </button>

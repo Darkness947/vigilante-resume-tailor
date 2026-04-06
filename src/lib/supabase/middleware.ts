@@ -46,6 +46,19 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (user && isAdmin) {
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const isAdminUser =
+      Boolean(adminEmail && user.email && user.email.toLowerCase() === adminEmail.toLowerCase());
+
+    if (!isAdminUser) {
+      const locale = pathname.startsWith('/ar') ? 'ar' : 'en';
+      const url = request.nextUrl.clone();
+      url.pathname = `/${locale}/dashboard`;
+      return NextResponse.redirect(url);
+    }
+  }
+
   // If visiting auth pages while logged in, redirect to dashboard
   const isAuthPage = /^\/(en|ar)\/auth\/(login|signup)/.test(pathname);
   if (user && isAuthPage) {

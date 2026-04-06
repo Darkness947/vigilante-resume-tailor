@@ -1,43 +1,28 @@
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { getUser, isAdminEmail } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
-async function getUser() {
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll() {},
-      },
-    }
-  );
-  const { data: { user } } = await supabase.auth.getUser();
-  return user;
-}
-
-export default async function AdminDashboard() {
+export default async function AdminDashboard({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const user = await getUser();
   if (!user) {
-    redirect('/en/auth/login');
+    redirect(`/${locale}/auth/login`);
   }
 
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (!adminEmail || user.email !== adminEmail) {
-    // Normal users cannot access admin. Rediret to dashboard.
-    redirect('/en/dashboard');
+  if (!isAdminEmail(user.email)) {
+    redirect(`/${locale}/dashboard`);
   }
 
   // Fetch real logs from Supabase using service role if available
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let logs: any[] = [];
 
   if (supabaseUrl && supabaseKey) {
@@ -52,7 +37,7 @@ export default async function AdminDashboard() {
       if (!error && data && data.length > 0) {
         logs = data;
       }
-    } catch (e) {
+    } catch {
       console.warn("Failed fetching audit_logs from Supabase.");
     }
   }
@@ -107,6 +92,7 @@ export default async function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
             {logs.map((log: any) => (
               <tr key={log.id} className="border-b border-[#142032] hover:bg-[#142032] transition-colors">
                 <td className="py-3 text-[#d7e3fc]">{log.endpoint}</td>
