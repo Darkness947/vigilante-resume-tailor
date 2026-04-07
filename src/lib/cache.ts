@@ -12,7 +12,7 @@ export function generateCacheKey(resume: string, jd: string, lang: string, stren
     return `tailor:v1:${hash.digest('hex')}`;
 }
 
-export async function getCachedTailoring(key: string): Promise<any | null> {
+export async function getCachedTailoring(key: string): Promise<unknown | null> {
     if (!redis) return null;
     try {
         return await redis.get(key);
@@ -22,7 +22,7 @@ export async function getCachedTailoring(key: string): Promise<any | null> {
     }
 }
 
-export async function setCachedTailoring(key: string, data: any): Promise<void> {
+export async function setCachedTailoring(key: string, data: unknown): Promise<void> {
     if (!redis) return;
     try {
         // Cache for 24 hours (86400 seconds)

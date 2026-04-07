@@ -62,6 +62,7 @@ export async function tailorResume(
     "gemini-2.0-flash"
   ];
   const maxRetries = 3;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let lastError: any;
 
   for (const model of models) {

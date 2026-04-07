@@ -22,8 +22,16 @@ export default async function AdminDashboard({
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let logs: any[] = [];
+  interface AuditLog {
+    id: string;
+    endpoint: string;
+    ip_hash: string;
+    latency: number;
+    created_at: string;
+    status: string;
+  }
+
+  let logs: AuditLog[] = [];
 
   if (supabaseUrl && supabaseKey) {
     try {
@@ -92,8 +100,7 @@ export default async function AdminDashboard({
             </tr>
           </thead>
           <tbody>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            {logs.map((log: any) => (
+            {logs.map((log) => (
               <tr key={log.id} className="border-b border-[#142032] hover:bg-[#142032] transition-colors">
                 <td className="py-3 text-[#d7e3fc]">{log.endpoint}</td>
                 <td className="text-[#737679]">{log.ip_hash?.substring(0, 8) || '—'}...</td>
