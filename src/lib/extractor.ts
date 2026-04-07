@@ -1,15 +1,15 @@
 import { Buffer } from 'buffer';
 import * as mammoth from 'mammoth';
 
-// @ts-ignore
-import pdfParse from 'pdf-parse';
+import { PDFParse } from 'pdf-parse';
 
 export async function extractTextFromFile(file: File): Promise<string> {
   const buffer = Buffer.from(await file.arrayBuffer());
 
   if (file.type === 'application/pdf') {
     try {
-      const parsed = await pdfParse(buffer);
+      const parser = new PDFParse({ data: buffer });
+      const parsed = await parser.getText();
       return parsed.text;
     } catch (e) {
       throw new Error(`Failed to safely parse PDF document: ${(e as Error).message}`);

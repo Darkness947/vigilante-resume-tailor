@@ -1,4 +1,6 @@
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
 const fs = require('fs');
+/* eslint-disable @typescript-eslint/no-require-imports */
 const https = require('https');
 const path = require('path');
 

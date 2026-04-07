@@ -1,0 +1,56 @@
+﻿
+C:\Projects\vigilante-resume-tailor\scripts\download-fonts.js
+  1:12  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Projects\vigilante-resume-tailor\src\app\[locale]\admin\page.tsx
+  111:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Projects\vigilante-resume-tailor\src\app\[locale]\auth\login\page.tsx
+  10:9  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Projects\vigilante-resume-tailor\src\app\[locale]\auth\signup\page.tsx
+  10:9  warning  't' is assigned a value but never used       @typescript-eslint/no-unused-vars
+  11:9  warning  'router' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Projects\vigilante-resume-tailor\src\app\[locale]\dashboard\page.tsx
+   38:5   warning  'language' is assigned a value but never used     @typescript-eslint/no-unused-vars
+   38:15  warning  'setLanguage' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   92:57  error    Unexpected any. Specify a different type          @typescript-eslint/no-explicit-any
+  106:64  error    Unexpected any. Specify a different type          @typescript-eslint/no-explicit-any
+
+C:\Projects\vigilante-resume-tailor\src\app\[locale]\layout.tsx
+  42:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Projects\vigilante-resume-tailor\src\app\api\parse\route.ts
+  31:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Projects\vigilante-resume-tailor\src\app\api\pdf\route.ts
+  13:24  error  'template' is never reassigned. Use 'const' instead                                                                  prefer-const
+  25:92  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  28:5   error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  43:19  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+
+C:\Projects\vigilante-resume-tailor\src\app\api\tailor\route.ts
+  30:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Projects\vigilante-resume-tailor\src\app\auth\callback\route.ts
+  25:22  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Projects\vigilante-resume-tailor\src\hooks\useResumeTailor.ts
+  12:42  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Projects\vigilante-resume-tailor\src\i18n\request.ts
+  6:54  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Projects\vigilante-resume-tailor\src\lib\extractor.ts
+  4:1  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+
+C:\Projects\vigilante-resume-tailor\src\lib\storage.ts
+  8:58  warning  'originalFilename' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Projects\vigilante-resume-tailor\src\lib\supabase\server.ts
+  20:20  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+Γ£û 23 problems (15 errors, 8 warnings)
+

@@ -10,6 +10,10 @@ function stripJsonFences(input: string) {
     .trim();
 }
 
+async function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export async function tailorResume(
   originalResume: string,
   jobDescription: string,
@@ -50,34 +54,77 @@ export async function tailorResume(
     }
   };
 
-  // Currently requesting to gemini-2.5-flash
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
+  const models = [
+    "gemini-2.5-flash",
+    "gemini-flash-latest",
+    "gemini-2.5-flash-lite",
+    "gemini-pro-latest",
+    "gemini-2.0-flash"
+  ];
+  const maxRetries = 3;
+  let lastError: any;
 
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`Gemini API Error: ${errText}`);
+  for (const model of models) {
+    console.log(`[Gemini] Attempting tailoring with model: ${model}...`);
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        if (attempt > 0) {
+          const waitTime = Math.pow(2, attempt) * 1000;
+          console.log(`[Gemini] Retrying with ${model} (Attempt ${attempt}/${maxRetries}) after ${waitTime}ms...`);
+          await delay(waitTime);
+        }
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          const status = response.status;
+          const errText = await response.text();
+          
+          if (status === 429) {
+            console.warn(`[Gemini] Model ${model} quota exhausted (429). Rotating to next model immediately...`);
+            lastError = new Error(`Gemini API 429: ${errText}`);
+            break; // Move to next model IMMEDIATELY on 429
+          }
+
+          if (status === 503) {
+            console.warn(`[Gemini] Model ${model} overloaded (503). ${attempt < maxRetries ? 'Retrying...' : 'Falling back...'}`);
+            lastError = new Error(`Gemini API 503: ${errText}`);
+            continue; // Retry same model for 503
+          }
+          
+          throw new Error(`Gemini API Error (${status}): ${errText}`);
+        }
+
+        const responseJson = await response.json();
+        const rawDataStr = responseJson.candidates?.[0]?.content?.parts?.[0]?.text;
+        
+        if (!rawDataStr) {
+          throw new Error("Unable to extract valid response parts from Gemini API.");
+        }
+
+        let parsed: unknown;
+        try {
+          parsed = JSON.parse(stripJsonFences(String(rawDataStr)));
+        } catch (e) {
+          throw new Error(`Gemini returned non-JSON output. ${(e as Error).message}`);
+        }
+
+        const validatedData = AtsTailorResponseSchema.parse(parsed);
+        return validatedData;
+
+      } catch (err) {
+        lastError = err;
+        // If it's a fatal error (not 503/429), move to next model
+        if (!(err instanceof Error && (err.message.includes('503') || err.message.includes('429')))) {
+          break; 
+        }
+      }
+    }
   }
 
-  const responseJson = await response.json();
-  const rawDataStr = responseJson.candidates?.[0]?.content?.parts?.[0]?.text;
-  
-  if (!rawDataStr) {
-    throw new Error("Unable to extract valid response parts from Gemini API.");
-  }
-
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(stripJsonFences(String(rawDataStr)));
-  } catch (e) {
-    throw new Error(
-      `Gemini returned non-JSON output. ${(e as Error).message}`
-    );
-  }
-
-  const validatedData = AtsTailorResponseSchema.parse(parsed);
-  return validatedData;
+  throw lastError || new Error("Tailoring failed after trying all available models and retries.");
 }

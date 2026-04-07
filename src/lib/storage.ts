@@ -5,6 +5,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function uploadPdfToStorage(buffer: Buffer, originalFilename: string) {
   const fileExt = '.pdf';
   const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}${fileExt}`;

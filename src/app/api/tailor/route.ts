@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { tailorResume } from '@/lib/gemini';
 import { ratelimit } from '@/lib/ratelimit';
+import { generateCacheKey, getCachedTailoring, setCachedTailoring } from '@/lib/cache';
 
 export async function POST(req: Request) {
   try {
@@ -23,12 +24,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required texts for tailoring." }, { status: 400 });
     }
 
+    const lang = language || 'en';
+    const str = strength || 'balanced';
+
+    // 1. Check Cache
+    const cacheKey = generateCacheKey(originalResume, jobDescription, lang, str);
+    const cachedResult = await getCachedTailoring(cacheKey);
+
+    if (cachedResult) {
+      console.log(`[Tailor API] Cache Hit: Returning cached result for ${cacheKey.substring(0, 15)}...`);
+      return NextResponse.json({ success: true, data: cachedResult, cached: true });
+    }
+
+    // 2. Call Engine
     const result = await tailorResume(
       originalResume, 
       jobDescription, 
-      language || 'en', 
-      strength || 'balanced'
+      lang, 
+      str
     );
+
+    // 3. Store in Cache
+    await setCachedTailoring(cacheKey, result);
 
     return NextResponse.json({ success: true, data: result });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

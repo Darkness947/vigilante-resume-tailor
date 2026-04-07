@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useId } from 'react';
+import React, { useEffect, useId, useRef } from 'react';
 import { useResumeTailor } from '@/hooks/useResumeTailor';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Link } from '@/i18n/routing';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 
 function ScoreBar({ label, value }: { label: string; value: number }) {
   const safe = Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : 0;
@@ -34,6 +34,8 @@ export default function DashboardPage() {
   const fileId = useId();
   const jdId = useId();
   const locale = useLocale();
+  const t = useTranslations('Dashboard');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     file,
@@ -58,19 +60,22 @@ export default function DashboardPage() {
     setLanguage(locale === 'ar' ? 'ar' : 'en');
   }, [locale, setLanguage]);
 
+  const handleFileSelectClick = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <div className="mx-auto w-full max-w-6xl space-y-6 p-6 lg:p-10">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div className="space-y-2">
-          <h1 className="text-3xl font-semibold tracking-tight">Resume tailoring</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">{t('title')}</h1>
           <p className="max-w-2xl text-sm text-muted-foreground">
-            Upload your resume and paste a job description. The engine will optimize content for ATS while
-            keeping your experience truthful.
+            {t('desc')}
           </p>
         </div>
         <Link href="/" className="block">
           <Button type="button" variant="outline">
-            Back to home
+            {t('back_home')}
           </Button>
         </Link>
       </header>
@@ -78,33 +83,32 @@ export default function DashboardPage() {
       <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
         <Card className="shadow-ambient">
           <CardHeader>
-            <CardTitle>Inputs</CardTitle>
-            <CardDescription>Resume + job description + tuning settings.</CardDescription>
+            <CardTitle>{t('input_card_title')}</CardTitle>
+            <CardDescription>{t('input_card_desc')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor={fileId}>Resume file</Label>
+              <Label htmlFor={fileId}>{t('file_label')}</Label>
               <div className="flex flex-col gap-3 rounded-xl border bg-card p-4">
                 <div className="flex flex-col gap-1">
                   <p className="text-sm font-medium">
-                    {file ? file.name : 'Choose a PDF, DOCX, or TXT file'}
+                    {file ? file.name : t('file_placeholder')}
                   </p>
-                  <p className="text-xs text-muted-foreground">Max size is controlled by server configuration.</p>
+                  <p className="text-xs text-muted-foreground">{t('file_max_size')}</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <label htmlFor={fileId} className="cursor-pointer">
-                    <Button type="button" variant="secondary">
-                      {file ? 'Change file' : 'Select file'}
-                    </Button>
-                  </label>
+                  <Button type="button" variant="secondary" onClick={handleFileSelectClick}>
+                    {file ? t('file_change_btn') : t('file_select_btn')}
+                  </Button>
                   {file ? (
                     <Button variant="outline" onClick={() => setFile(null)}>
-                      Remove
+                      {t('file_remove_btn')}
                     </Button>
                   ) : null}
                 </div>
                 <input
                   id={fileId}
+                  ref={fileInputRef}
                   type="file"
                   accept=".pdf,.doc,.docx,.txt"
                   className="sr-only"
@@ -114,55 +118,55 @@ export default function DashboardPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor={jdId}>Job description</Label>
+              <Label htmlFor={jdId}>{t('jd_label')}</Label>
               <Textarea
                 id={jdId}
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
-                placeholder="Paste the job description here…"
+                placeholder={t('jd_placeholder')}
                 className="min-h-40"
               />
             </div>
 
             <Tabs value={strength} onValueChange={(v) => setStrength(v as typeof strength)}>
               <div className="flex items-center justify-between gap-3">
-                <Label>Tailoring strength</Label>
+                <Label>{t('strength_label')}</Label>
                 <TabsList>
-                  <TabsTrigger value="conservative">Conservative</TabsTrigger>
-                  <TabsTrigger value="balanced">Balanced</TabsTrigger>
-                  <TabsTrigger value="aggressive">Aggressive</TabsTrigger>
+                  <TabsTrigger value="conservative">{t('strength_conservative')}</TabsTrigger>
+                  <TabsTrigger value="balanced">{t('strength_balanced')}</TabsTrigger>
+                  <TabsTrigger value="aggressive">{t('strength_aggressive')}</TabsTrigger>
                 </TabsList>
               </div>
               <TabsContent value={strength} className="mt-2 text-sm text-muted-foreground">
                 {strength === 'conservative'
-                  ? 'Minimal edits, safe keyword alignment.'
+                  ? t('strength_desc_conservative')
                   : strength === 'balanced'
-                    ? 'Strong alignment while staying natural.'
-                    : 'Maximum keyword coverage, still no hallucinations.'}
+                    ? t('strength_desc_balanced')
+                    : t('strength_desc_aggressive')}
               </TabsContent>
             </Tabs>
 
             <div className="space-y-2">
-              <Label>PDF template</Label>
+              <Label>{t('template_label')}</Label>
               <Select value={template} onValueChange={(v) => setTemplate(v as typeof template)}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a template" />
+                  <SelectValue placeholder={t('template_placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="classic">Classic ATS</SelectItem>
-                  <SelectItem value="modern">Modern</SelectItem>
-                  <SelectItem value="arabic-rtl">Arabic (RTL)</SelectItem>
+                  <SelectItem value="classic">{t('template_classic')}</SelectItem>
+                  <SelectItem value="modern">{t('template_modern')}</SelectItem>
+                  <SelectItem value="arabic-rtl">{t('template_arabic')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="flex flex-col gap-3">
               <Button onClick={processWorkflow} disabled={!canRun} className="w-full">
-                {isProcessing ? progressStep || 'Processing…' : 'Tailor resume'}
+                {isProcessing ? progressStep || t('processing') : t('tailor_btn')}
               </Button>
               {isProcessing ? (
                 <p className="text-xs text-muted-foreground">
-                  Keep this tab open. We’ll update the status as each step completes.
+                  {t('processing_hint')}
                 </p>
               ) : null}
             </div>
@@ -171,20 +175,20 @@ export default function DashboardPage() {
 
         <Card className="shadow-ambient">
           <CardHeader>
-            <CardTitle>Results</CardTitle>
-            <CardDescription>Scores, keywords, and your generated PDF.</CardDescription>
+            <CardTitle>{t('results_card_title')}</CardTitle>
+            <CardDescription>{t('results_card_desc')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {result ? (
               <>
                 <div className="grid gap-4">
-                  <ScoreBar label="Current match" value={result.ats_score} />
-                  <ScoreBar label="Predicted match" value={result.predicted_ats_score} />
+                  <ScoreBar label={t('score_current')} value={result.ats_score} />
+                  <ScoreBar label={t('score_predicted')} value={result.predicted_ats_score} />
                 </div>
 
                 <div className="space-y-3">
                   <div className="space-y-2">
-                    <p className="text-sm font-medium">Missing keywords</p>
+                    <p className="text-sm font-medium">{t('keywords_missing')}</p>
                     <div className="flex flex-wrap gap-2">
                       {result.keywords_missing?.length ? (
                         result.keywords_missing.map((k: string, i: number) => (
@@ -193,13 +197,13 @@ export default function DashboardPage() {
                           </Badge>
                         ))
                       ) : (
-                        <p className="text-sm text-muted-foreground">None detected.</p>
+                        <p className="text-sm text-muted-foreground">{t('keywords_none')}</p>
                       )}
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <p className="text-sm font-medium">Matched keywords</p>
+                    <p className="text-sm font-medium">{t('keywords_matched')}</p>
                     <div className="flex flex-wrap gap-2">
                       {result.keywords_matched?.length ? (
                         result.keywords_matched.map((k: string, i: number) => (
@@ -208,7 +212,7 @@ export default function DashboardPage() {
                           </Badge>
                         ))
                       ) : (
-                        <p className="text-sm text-muted-foreground">No matches yet.</p>
+                        <p className="text-sm text-muted-foreground">{t('keywords_no_matches')}</p>
                       )}
                     </div>
                   </div>
@@ -217,26 +221,26 @@ export default function DashboardPage() {
                 {pdfUrl ? (
                   <div className="rounded-xl border bg-card p-4">
                     <div className="flex flex-col gap-1">
-                      <p className="text-sm font-medium">PDF ready</p>
-                      <p className="text-xs text-muted-foreground">Download the tailored resume PDF.</p>
+                      <p className="text-sm font-medium">{t('pdf_ready')}</p>
+                      <p className="text-xs text-muted-foreground">{t('pdf_ready_desc')}</p>
                     </div>
                     <div className="mt-3">
                       <a href={pdfUrl} target="_blank" rel="noreferrer" className="block">
-                        <Button className="w-full">Download PDF</Button>
+                        <Button className="w-full">{t('pdf_download_btn')}</Button>
                       </a>
                     </div>
                   </div>
                 ) : (
                   <div className="rounded-xl border bg-muted/30 p-4 text-sm text-muted-foreground">
-                    Run tailoring to generate the PDF.
+                    {t('pdf_run_hint')}
                   </div>
                 )}
               </>
             ) : (
               <div className="flex min-h-80 flex-col items-center justify-center gap-2 rounded-xl border bg-muted/20 p-6 text-center">
-                <p className="text-sm font-medium">No results yet</p>
+                <p className="text-sm font-medium">{t('empty_state_title')}</p>
                 <p className="text-sm text-muted-foreground">
-                  Select a resume file and paste a job description, then run tailoring.
+                  {t('empty_state_desc')}
                 </p>
               </div>
             )}
