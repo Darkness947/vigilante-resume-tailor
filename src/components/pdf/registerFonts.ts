@@ -11,40 +11,35 @@ export function registerAllFonts() {
   Font.register({
     family: 'Inter',
     fonts: [
-      { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 'normal' },
-      { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 'bold' }
+      { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 400, fontStyle: 'normal' },
+      { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 400, fontStyle: 'italic' },
+      { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 700, fontStyle: 'normal' },
+      { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 700, fontStyle: 'italic' }
     ]
   });
 
   Font.register({
     family: 'Cairo',
     fonts: [
-      { src: path.join(fontsDir, 'Cairo-400.ttf'), fontWeight: 'normal' },
-      { src: path.join(fontsDir, 'Cairo-Bold.ttf'), fontWeight: 'bold' }
+      { src: path.join(fontsDir, 'Cairo-400.ttf'), fontWeight: 400, fontStyle: 'normal' },
+      { src: path.join(fontsDir, 'Cairo-400.ttf'), fontWeight: 400, fontStyle: 'italic' },
+      { src: path.join(fontsDir, 'Cairo-Bold.ttf'), fontWeight: 700, fontStyle: 'normal' },
+      { src: path.join(fontsDir, 'Cairo-Bold.ttf'), fontWeight: 700, fontStyle: 'italic' }
     ]
   });
 
   // Alias standard fonts to Inter to prevent react-pdf-html crashes
-  Font.register({
-    family: 'Arial',
-    fonts: [
-      { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 'normal' },
-      { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 'bold' }
-    ]
-  });
-  Font.register({
-    family: 'Helvetica',
-    fonts: [
-      { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 'normal' },
-      { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 'bold' }
-    ]
-  });
-  Font.register({
-    family: 'sans-serif',
-    fonts: [
-      { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 'normal' },
-      { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 'bold' }
-    ]
+  const aliases = ['Arial', 'Helvetica', 'sans-serif', 'Times-Roman', 'Times New Roman'];
+  aliases.forEach(alias => {
+    Font.register({
+      family: alias,
+      fonts: [
+        { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 400, fontStyle: 'normal' },
+        { src: path.join(fontsDir, 'Inter-400.ttf'), fontWeight: 400, fontStyle: 'italic' },
+        { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 700, fontStyle: 'normal' },
+        { src: path.join(fontsDir, 'Inter-Bold.ttf'), fontWeight: 700, fontStyle: 'italic' }
+      ]
+    });
   });
   
   fontsRegistered = true;
