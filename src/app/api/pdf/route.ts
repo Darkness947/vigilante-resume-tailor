@@ -16,8 +16,33 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing htmlContent parameter." }, { status: 400 });
     }
 
-    // Strip font-family declarations that crash react-pdf
-    const htmlContent = String(rawHtmlContent).replace(/font-family\s*:\s*[^;"]+;?/gi, '');
+    // Comprehensive sanitization for PDF rendering
+    const htmlContent = String(rawHtmlContent)
+      // Strip problematic tags
+      .replace(/<(script|head|style|link|small|iframe|object|embed)[^>]*>[\s\S]*?<\/\1>/gi, '')
+      .replace(/<(script|head|style|link|small|iframe|object|embed)[^>]*\/>/gi, '')
+      // Strip forbidden attributes (onclick, etc.)
+      .replace(/\bon\w+\s*=\s*(['"]).*?\1/gi, '')
+      // Strip unsupported styles that cause NaN or warnings
+      .replace(/style\s*=\s*(['"])(.*?)\1/gi, (match, quote, styleContent) => {
+        const cleanedStyle = styleContent
+          .split(';')
+          .map((s: string) => s.trim())
+          .filter((s: string) => {
+            const lower = s.toLowerCase();
+            return !(
+              lower.includes('font-family') ||
+              lower.includes('box-shadow') ||
+              lower.includes('list-style') ||
+              lower.includes('border-radius') ||
+              lower.includes('transition') ||
+              lower.includes('animation') ||
+              lower.includes('nan')
+            );
+          })
+          .join('; ');
+        return `style=${quote}${cleanedStyle}${quote}`;
+      });
 
     let Component = ClassicTemplate;
     if (template === 'modern') Component = ModernTemplate;

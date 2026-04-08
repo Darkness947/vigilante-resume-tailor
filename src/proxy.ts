@@ -29,6 +29,7 @@ export const config = {
   matcher: [
     '/',
     '/(ar|en)/:path*',
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    // Exclude static assets, api routes, and common font formats (.ttf, .woff, .woff2)
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ttf|woff|woff2)$).*)',
   ],
 };
