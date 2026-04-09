@@ -12,7 +12,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import { Logo } from '@/components/ui/Logo';
 import { UploadCloud, FileText, Sparkles, CheckCircle2 } from 'lucide-react';
 
@@ -74,7 +73,6 @@ export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const t = useTranslations('Index');
-  const n = useTranslations('Nav');
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {

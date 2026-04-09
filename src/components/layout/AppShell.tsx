@@ -5,7 +5,6 @@ import { createClient } from '@/lib/supabase/client';
 import { useState, useEffect } from 'react';
 import { LanguageToggle } from '@/components/layout/LanguageToggle';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 import { Logo } from '@/components/ui/Logo';
 import { motion } from 'framer-motion';
 import { 
