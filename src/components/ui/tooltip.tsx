@@ -17,12 +17,30 @@ function TooltipProvider({
   )
 }
 
-function Tooltip({ ...props }: TooltipPrimitive.Root.Props) {
-  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />
+function Tooltip({ children, open, ...props }: TooltipPrimitive.Root.Props & { children?: React.ReactNode; open?: boolean }) {
+  return (
+    <TooltipPrimitive.Root data-slot="tooltip" open={open} {...props}>
+      {children}
+    </TooltipPrimitive.Root>
+  )
 }
 
-function TooltipTrigger({ ...props }: TooltipPrimitive.Trigger.Props) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
+function TooltipTrigger({ 
+  children, 
+  render,
+  ...props 
+}: TooltipPrimitive.Trigger.Props & { 
+  children?: React.ReactNode
+}) {
+  return (
+    <TooltipPrimitive.Trigger 
+      data-slot="tooltip-trigger" 
+      render={render}
+      {...props}
+    >
+      {children}
+    </TooltipPrimitive.Trigger>
+  )
 }
 
 function TooltipContent({

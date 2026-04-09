@@ -9,6 +9,10 @@ import { routing } from '@/i18n/routing';
 export const metadata: Metadata = {
   title: 'VIGILANTE Resume Tailor',
   description: 'Your resume, tailored for the job, AI-powered and ready for ATS.',
+  icons: {
+    icon: '/logo-final.png',
+    apple: '/logo-final.png',
+  },
 };
 
 export default async function RootLayout({
@@ -27,10 +31,10 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} suppressHydrationWarning>
+    <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'} className="dark" suppressHydrationWarning>
       <body className="min-h-screen bg-background antialiased text-foreground selection:bg-primary selection:text-primary-foreground">
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <ThemeProvider>
             {children}
           </ThemeProvider>
         </NextIntlClientProvider>

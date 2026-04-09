@@ -81,7 +81,8 @@
     "pdf_run_hint": "Run tailoring to generate the PDF.",
     "empty_state_title": "No results yet",
     "empty_state_desc": "Select a resume file and paste a job description, then run tailoring.",
-    "back_home": "Back to home"
+    "back_home": "Back to home",
+    "settings_btn": "Settings"
   },
   "Settings": {
     "title": "Settings",
@@ -108,5 +109,26 @@
       "title": "Generate and download",
       "desc": "Review ATS scores, keywords, and download a clean PDF template."
     }
+  },
+  "Links": {
+    "title": "Connect with the Operative",
+    "subtitle": "Direct channels to the developer behind the engine.",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "portfolio": "Portfolio",
+    "email": "Direct Email"
+  },
+  "Footer": {
+    "product": "Product",
+    "dashboard": "Dashboard",
+    "features": "Features",
+    "pricing": "Internal Use",
+    "company": "Company",
+    "about": "About Ops",
+    "security": "Security",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "rights": "ALL RIGHTS RESERVED."
   }
 }

@@ -6,7 +6,7 @@ import { generateCacheKey, getCachedTailoring, setCachedTailoring } from '@/lib/
 export async function POST(req: Request) {
   try {
     const ip = req.headers.get('x-forwarded-for') || 'anonymous';
-    
+
     if (ratelimit) {
       try {
         const { success } = await ratelimit.limit(ip);
@@ -38,9 +38,9 @@ export async function POST(req: Request) {
 
     // 2. Call Engine
     const result = await tailorResume(
-      originalResume, 
-      jobDescription, 
-      lang, 
+      originalResume,
+      jobDescription,
+      lang,
       str
     );
 
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     await setCachedTailoring(cacheKey, result);
 
     return NextResponse.json({ success: true, data: result });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     const message = typeof error?.message === 'string' ? error.message : 'Unknown error';
     console.error('[Gemini Tailor API]', message);

@@ -49,10 +49,10 @@ export async function POST(req: Request) {
     if (template === 'arabic-rtl') Component = ArabicRtlTemplate;
 
     // React-PDF expects a node stream, so we must buffer it manually.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const stream = await renderToStream(React.createElement(Component, { htmlContent }) as any);
     const chunks: Buffer[] = [];
-    
+
     for await (const chunk of stream) {
       chunks.push(Buffer.from(chunk));
     }
@@ -60,14 +60,14 @@ export async function POST(req: Request) {
 
     // Bypassing Supabase upload in local test mode if required keys are missing securely:
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY && !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-       console.log("[PDF API] Local Generation successful, skipping Supabase upload due to missing keys.");
-       // Return raw base64 mapping for local fallback testing
-       return NextResponse.json({ success: true, url: `data:application/pdf;base64,${pdfBuffer.toString('base64')}` });
+      console.log("[PDF API] Local Generation successful, skipping Supabase upload due to missing keys.");
+      // Return raw base64 mapping for local fallback testing
+      return NextResponse.json({ success: true, url: `data:application/pdf;base64,${pdfBuffer.toString('base64')}` });
     }
 
     const signedUrl = await uploadPdfToStorage(pdfBuffer, 'resume');
     return NextResponse.json({ success: true, url: signedUrl });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error('[PDF Gen Error]', error);
     return NextResponse.json({ error: 'PDF generation failed. Please see server logs.' }, { status: 500 });

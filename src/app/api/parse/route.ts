@@ -6,7 +6,7 @@ import { ratelimit } from '@/lib/ratelimit';
 export async function POST(req: Request) {
   try {
     const ip = req.headers.get('x-forwarded-for') || 'anonymous';
-    
+
     // In strict dev environment, upstash might fail without valid keys, so wrap it gracefully:
     if (ratelimit) {
       try {
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     const text = await extractTextFromFile(file as File);
 
     return NextResponse.json({ success: true, text });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error && error.name === 'ZodError') {
       const msg = error.errors && error.errors.length > 0 ? error.errors[0].message : 'Validation failed';
