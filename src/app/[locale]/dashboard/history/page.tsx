@@ -1,5 +1,4 @@
 import { getUserResumes } from '@/lib/actions/resumes';
-import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,13 +10,12 @@ import {
   FileText, 
   Target, 
   Building2,
-  AlertCircle,
   Sparkles
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { getTranslations } from 'next-intl/server';
 
-export default async function HistoryPage({ params }: { params: { locale: string } }) {
+export default async function HistoryPage() {
   const resumes = await getUserResumes();
   const t = await getTranslations('History');
   const d = await getTranslations('Dashboard');

@@ -55,7 +55,7 @@ export async function saveResumeHistory(payload: {
     job_description: payload.job_description,
     job_title: payload.job_title,
     company_name: payload.company_name,
-    tailored_json: payload.tailored_json as any, 
+    tailored_json: payload.tailored_json as unknown as Record<string, unknown>, 
     ats_score: payload.ats_score,
     keywords_matched: payload.keywords_matched,
     keywords_missing: payload.keywords_missing,
