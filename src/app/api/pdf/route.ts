@@ -65,8 +65,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, url: `data:application/pdf;base64,${pdfBuffer.toString('base64')}` });
     }
 
-    const signedUrl = await uploadPdfToStorage(pdfBuffer, 'resume');
-    return NextResponse.json({ success: true, url: signedUrl });
+    const result = await uploadPdfToStorage(pdfBuffer, 'resume');
+    return NextResponse.json({ success: true, url: result.url, path: result.path });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error('[PDF Gen Error]', error);

@@ -1,5 +1,12 @@
 import { redirect } from 'next/navigation';
 import { getUser, isAdminEmail } from '@/lib/supabase/server';
+import { getTranslations } from 'next-intl/server';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { ShieldAlert, Users, Activity, ArrowLeft } from 'lucide-react';
+import { Link } from '@/i18n/routing';
+import { Button } from '@/components/ui/button';
+import { createClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,112 +17,147 @@ export default async function AdminDashboard({
 }) {
   const { locale } = await params;
   const user = await getUser();
-  if (!user) {
-    redirect(`/${locale}/auth/login`);
-  }
+  const t = await getTranslations('Admin');
 
-  if (!isAdminEmail(user.email)) {
+  if (!user || !isAdminEmail(user.email)) {
     redirect(`/${locale}/dashboard`);
   }
 
-  // Fetch real logs from Supabase using service role if available
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  // Supabase Service Role Client
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
-  interface AuditLog {
-    id: string;
-    endpoint: string;
-    ip_hash: string;
-    latency: number;
-    created_at: string;
-    status: string;
-  }
+  // Fetch Stats
+  const { count: totalUsers } = await supabase
+    .from('profiles')
+    .select('*', { count: 'exact', head: true });
 
-  let logs: AuditLog[] = [];
+  const { count: totalLogs } = await supabase
+    .from('admin_audit_log')
+    .select('*', { count: 'exact', head: true });
 
-  if (supabaseUrl && supabaseKey) {
-    try {
-      const { createClient } = await import('@supabase/supabase-js');
-      const supabase = createClient(supabaseUrl, supabaseKey);
-      const { data, error } = await supabase
-        .from('audit_logs')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(100);
-      if (!error && data && data.length > 0) {
-        logs = data;
-      }
-    } catch {
-      console.warn("Failed fetching audit_logs from Supabase.");
-    }
-  }
+  // Fetch Latest Logs
+  const { data: logs } = await supabase
+    .from('admin_audit_log')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(50);
 
-  // Only show demo data if no real data available
-  if (logs.length === 0) {
-    logs = [
-      { id: '1', endpoint: '/api/parse', ip_hash: 'c4ca4238', latency: 345, created_at: new Date().toISOString(), status: '200' },
-      { id: '2', endpoint: '/api/tailor', ip_hash: 'c81e728d', latency: 1240, created_at: new Date(Date.now() - 10000).toISOString(), status: '200' },
-      { id: '3', endpoint: '/api/pdf', ip_hash: 'eccbc87e', latency: 50, created_at: new Date(Date.now() - 20000).toISOString(), status: '500' },
-    ];
-  }
+  const stats = [
+    { label: t('stats_users'), value: totalUsers || 0, icon: Users, color: 'text-primary' },
+    { label: t('stats_logs'), value: totalLogs || 0, icon: ShieldAlert, color: 'text-secondary' },
+    { label: t('stats_success'), value: '100%', icon: Activity, color: 'text-emerald-400' },
+  ];
 
   return (
-    <div className="text-[#d7e3fc] p-6 lg:p-10">
-      <header className="mb-8">
-        <h1 className="text-2xl font-black tracking-tight uppercase text-[#6bd8cb]">Admin Overlook Protocol</h1>
-        <p className="text-[#737679] text-sm mt-1.5">Monitors anonymized endpoint usage. No PII is logged.</p>
-        <p className="text-[#45484c] text-xs mt-1 font-mono">Authenticated as: {user.email}</p>
+    <div className="flex flex-col gap-8 p-6 lg:p-10 max-w-7xl mx-auto">
+      <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest mb-4 shadow-glow">
+            <ShieldAlert className="size-3" />
+            <span>Secure Access Restricted</span>
+          </div>
+          <h1 className="display-font text-4xl font-black tracking-tight text-foreground uppercase">
+            {t('title')}
+          </h1>
+          <p className="text-muted-foreground text-sm max-w-xl">
+            {t('desc')}
+          </p>
+        </div>
+        <Link href="/dashboard">
+          <Button variant="outline" size="sm" className="gap-2 font-bold uppercase tracking-widest text-[10px] bg-background/50 backdrop-blur-sm border-border/50">
+            <ArrowLeft className="size-3" />
+            {t('back_dashboard')}
+          </Button>
+        </Link>
       </header>
 
-      {/* Stats Summary */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div className="bg-[#101c2e] p-5 rounded-lg">
-          <p className="text-xs text-[#737679] uppercase tracking-widest mb-1">Total Requests</p>
-          <p className="text-2xl font-bold font-mono text-[#d7e3fc]">{logs.length}</p>
-        </div>
-        <div className="bg-[#101c2e] p-5 rounded-lg">
-          <p className="text-xs text-[#737679] uppercase tracking-widest mb-1">Success Rate</p>
-          <p className="text-2xl font-bold font-mono text-[#6bd8cb]">
-            {logs.length > 0 ? Math.round((logs.filter(l => l.status === '200').length / logs.length) * 100) : 0}%
-          </p>
-        </div>
-        <div className="bg-[#101c2e] p-5 rounded-lg">
-          <p className="text-xs text-[#737679] uppercase tracking-widest mb-1">Avg Latency</p>
-          <p className="text-2xl font-bold font-mono text-[#b8c4ff]">
-            {logs.length > 0 ? Math.round(logs.reduce((a, l) => a + (l.latency || 0), 0) / logs.length) : 0}ms
-          </p>
-        </div>
+      {/* Stats Grid */}
+      <div className="grid gap-4 sm:grid-cols-3">
+        {stats.map((stat, idx) => (
+          <Card key={idx} className="border-border/50 bg-card/40 backdrop-blur-sm shadow-premium overflow-hidden relative group">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 blur-2xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-primary/10 transition-colors" />
+            <CardHeader className="pb-2">
+              <stat.icon className={`size-5 mb-2 ${stat.color}`} />
+              <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground">
+                {stat.label}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="mono-font text-3xl font-black text-foreground">
+                {stat.value}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* Logs Table */}
-      <div className="bg-[#101c2e] p-6 rounded-lg overflow-x-auto">
-        <table className="w-full text-left font-mono text-sm">
-          <thead className="text-[#45474c]">
-            <tr className="border-b border-[#1c2024]">
-              <th className="py-3 font-normal tracking-widest uppercase text-xs">Route</th>
-              <th className="font-normal tracking-widest uppercase text-xs">Hash</th>
-              <th className="font-normal tracking-widest uppercase text-xs">Latency</th>
-              <th className="font-normal tracking-widest uppercase text-xs">Timestamp</th>
-              <th className="font-normal tracking-widest uppercase text-xs text-right">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {logs.map((log) => (
-              <tr key={log.id} className="border-b border-[#142032] hover:bg-[#142032] transition-colors">
-                <td className="py-3 text-[#d7e3fc]">{log.endpoint}</td>
-                <td className="text-[#737679]">{log.ip_hash?.substring(0, 8) || '—'}...</td>
-                <td className="text-[#b8c4ff]">{log.latency ?? '—'}ms</td>
-                <td className="text-[#45474c]">{new Date(log.created_at).toLocaleTimeString()}</td>
-                <td className="text-right">
-                  <span className={`px-2 py-0.5 text-xs rounded-sm font-bold ${log.status === '200' ? 'bg-[#004145] text-[#6bd8cb]' : 'bg-[#360001] text-[#ffb4ab]'}`}>
-                    {log.status}
-                  </span>
-                </td>
+      <Card className="border-border/50 bg-card/40 backdrop-blur-sm shadow-premium overflow-hidden">
+        <CardHeader className="border-b border-border/50 bg-muted/30 pb-4">
+          <CardTitle className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
+            <Activity className="size-4 text-primary" />
+            Internal Audit Log
+          </CardTitle>
+        </CardHeader>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-border/50 bg-muted/20 text-[10px] font-black uppercase tracking-widest text-muted-foreground/70">
+                <th className="px-6 py-4">{t('table_header_action')}</th>
+                <th className="px-6 py-4">{t('table_header_target')}</th>
+                <th className="px-6 py-4">{t('table_header_metadata')}</th>
+                <th className="px-6 py-4">{t('table_header_ip')}</th>
+                <th className="px-6 py-4 text-right">{t('table_header_time')}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="divide-y divide-border/30">
+              {logs && logs.length > 0 ? (
+                logs.map((log) => (
+                  <tr key={log.id} className="group hover:bg-muted/30 transition-colors">
+                    <td className="px-6 py-4">
+                      <Badge variant="outline" className="font-bold border-primary/20 bg-primary/5 text-primary uppercase text-[9px] tracking-widest">
+                        {log.action}
+                      </Badge>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="mono-font text-[11px] text-muted-foreground group-hover:text-foreground transition-colors">
+                        {log.target_id ? log.target_id.split('-')[0] + '...' : '—'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="max-w-[150px] lg:max-w-xs truncate mono-font text-[10px] text-muted-foreground/60 italic" title={JSON.stringify(log.metadata)}>
+                        {log.metadata ? JSON.stringify(log.metadata) : '—'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="mono-font text-[11px] text-secondary">
+                        {log.ip_address || 'Internal'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <span className="text-[11px] text-muted-foreground tracking-tighter">
+                        {new Date(log.created_at).toLocaleString(locale, {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          second: '2-digit',
+                        })}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="px-6 py-20 text-center text-muted-foreground italic text-sm">
+                    {t('no_logs')}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </Card>
     </div>
   );
 }

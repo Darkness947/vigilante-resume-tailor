@@ -9,6 +9,7 @@ import { AuthNav } from '@/components/layout/AuthNav';
 import { ConnectSection } from '@/components/layout/ConnectSection';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
+import { checkAdminStatus } from '@/lib/actions/auth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
@@ -71,6 +72,7 @@ function HowToUse() {
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const t = useTranslations('Index');
   const shouldReduceMotion = useReducedMotion();
@@ -80,6 +82,12 @@ export default function Home() {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
+      
+      if (user) {
+        const adminStatus = await checkAdminStatus();
+        setIsAdmin(adminStatus);
+      }
+      
       setLoading(false);
     };
     getUser();
@@ -115,7 +123,7 @@ export default function Home() {
           </Link>
           <div className="flex items-center gap-4">
             <LanguageToggle />
-            <AuthNav />
+            <AuthNav isAdmin={isAdmin} />
           </div>
         </div>
       </nav>

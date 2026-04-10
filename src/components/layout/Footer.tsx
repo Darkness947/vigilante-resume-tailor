@@ -44,9 +44,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <span className="text-sm font-medium text-muted-foreground/50 italic">
+                <Link href="/#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                   {t('pricing')}
-                </span>
+                </Link>
               </li>
             </ul>
           </div>
@@ -79,7 +79,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="mt-20 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-border/50 pt-8">
           <p className="text-xs font-medium text-muted-foreground">
-            © {currentYear} VIGILANTE OPS. {t('rights')}
+            © {currentYear} VIGILANTE Resume Tailor. {t('rights')}
           </p>
           <div className="flex gap-6">
             <Link href="/#terms" className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">

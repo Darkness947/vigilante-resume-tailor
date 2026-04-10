@@ -14,6 +14,7 @@ import {
   LogOut, 
   ChevronRight,
   Menu,
+  Clock,
   X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -37,6 +38,7 @@ export function AppShell({ children, isAdmin }: { children: React.ReactNode; isA
 
   const navItems = [
     { href: '/dashboard' as const, label: n('dashboard'), icon: LayoutDashboard },
+    { href: '/dashboard/history' as const, label: n('history'), icon: Clock },
     { href: '/dashboard/settings' as const, label: n('settings'), icon: Settings },
     ...(isAdmin ? [{ href: '/admin' as const, label: n('admin'), icon: ShieldCheck }] : []),
   ] as const;

@@ -20,6 +20,7 @@
     "dashboard": "لوحة التحكم",
     "admin": "الإدارة",
     "settings": "الإعدادات",
+    "history": "السجل",
     "signout": "تسجيل الخروج"
   },
   "Auth": {
@@ -122,13 +123,39 @@
     "product": "المنتج",
     "dashboard": "لوحة التحكم",
     "features": "المميزات",
-    "pricing": "للاستخدام الداخلي",
-    "company": "الشركة",
+    "pricing": "طريقة الاستخدام",
+    "company": "المشروع",
     "about": "عن المشروع",
     "security": "الأمان",
     "legal": "قانوني",
     "privacy": "سياسة الخصوصية",
     "terms": "شروط الخدمة",
     "rights": "جميع الحقوق محفوظة."
+  },
+  "Admin": {
+    "title": "بروتوكول الإشراف الإداري",
+    "desc": "سجل نشاط النظام بالكامل ومراقب حالة العملاء.",
+    "stats_users": "إجمالي العملاء",
+    "stats_logs": "الأحداث الأمنية",
+    "stats_success": "نجاح البروتوكول",
+    "table_header_action": "الإجراء",
+    "table_header_target": "معرف الهدف",
+    "table_header_metadata": "حمولة البروتوكول",
+    "table_header_ip": "عنوان IP",
+    "table_header_time": "الطابع الزمني",
+    "no_logs": "لم يتم العثور على سجلات نشطة.",
+    "back_dashboard": "الرجوع للوحة التحكم"
+  },
+  "History": {
+    "title": "سجل التعديلات",
+    "desc": "الوصول إلى تعديلاتك السابقة وتحميلها.",
+    "no_resumes": "لم يتم العثور على سير ذاتية معدلة. ابدأ التعديل لإنشاء سجلك!",
+    "download_btn": "تحميل PDF",
+    "score_label": "درجة ATS",
+    "date_label": "تاريخ التعديل",
+    "job_title": "الدور الوظيفي",
+    "company": "الشركة",
+    "stats_total": "إجمالي المعدل",
+    "stats_avg_score": "متوسط الدرجة"
   }
 }

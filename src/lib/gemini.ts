@@ -31,9 +31,11 @@ export async function tailorResume(
       keywords_matched: { type: "ARRAY", items: { type: "STRING" } },
       keywords_missing: { type: "ARRAY", items: { type: "STRING" } },
       tailored_resume_html: { type: "STRING" },
-      feedback: { type: "STRING" }
+      feedback: { type: "STRING" },
+      job_title: { type: "STRING" },
+      company_name: { type: "STRING" }
     },
-    required: ["ats_score", "predicted_ats_score", "keywords_matched", "keywords_missing", "tailored_resume_html", "feedback"]
+    required: ["ats_score", "predicted_ats_score", "keywords_matched", "keywords_missing", "tailored_resume_html", "feedback", "job_title", "company_name"]
   };
 
   const systemInstruction = `You are VIGILANTE, an elite, highly precise ATS-optimization AI. Your objective is to brutally scrutinize the original resume against the provided job description and tailor it to bypass Applicant Tracking Systems. Output mathematically precise scores, exact keyword matches, and a highly polished HTML response containing the refined resume. Language context: ${language}. Tailoring aggression: ${strength}. DO NOT hallucinate job titles or experiences the user did not possess. Output MUST comply with the provided JSON schema.`;

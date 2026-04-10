@@ -20,6 +20,7 @@
     "dashboard": "Dashboard",
     "admin": "Admin",
     "settings": "Settings",
+    "history": "History",
     "signout": "Sign Out"
   },
   "Auth": {
@@ -122,13 +123,39 @@
     "product": "Product",
     "dashboard": "Dashboard",
     "features": "Features",
-    "pricing": "Internal Use",
-    "company": "Company",
-    "about": "About Ops",
+    "pricing": "How to Use",
+    "company": "About",
+    "about": "About VIGILANTE",
     "security": "Security",
     "legal": "Legal",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "rights": "ALL RIGHTS RESERVED."
+  },
+  "Admin": {
+    "title": "Admin Overlook Protocol",
+    "desc": "System-wide activity registry and operative status monitor.",
+    "stats_users": "Total Operatives",
+    "stats_logs": "Security Events",
+    "stats_success": "Protocol Success",
+    "table_header_action": "Action",
+    "table_header_target": "Target ID",
+    "table_header_metadata": "Protocol Payload",
+    "table_header_ip": "Source IP",
+    "table_header_time": "Timestamp",
+    "no_logs": "No active protocol logs detected.",
+    "back_dashboard": "Return to Dashboard"
+  },
+  "History": {
+    "title": "Tailoring History",
+    "desc": "Access and download your past optimizations.",
+    "no_resumes": "No tailored resumes found. Start tailoring to build your history!",
+    "download_btn": "Download PDF",
+    "score_label": "ATS Score",
+    "date_label": "Optimized on",
+    "job_title": "Role",
+    "company": "Company",
+    "stats_total": "Total Optimized",
+    "stats_avg_score": "Average Score"
   }
 }

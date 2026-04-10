@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   title: 'VIGILANTE Resume Tailor',
   description: 'Your resume, tailored for the job, AI-powered and ready for ATS.',
   icons: {
-    icon: '/logo-final.png',
-    apple: '/logo-final.png',
+    icon: '/logo-final.png?v=2',
+    apple: '/logo-final.png?v=2',
   },
 };
 

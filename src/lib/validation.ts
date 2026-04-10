@@ -40,6 +40,8 @@ export const AtsTailorResponseSchema = z.object({
   keywords_missing: z.array(z.string()).describe("List of critical keywords missing from the prompt"),
   tailored_resume_html: z.string().describe("The hyper-optimized HTML string containing the final refined resume output with zero hallucinations, structured cleanly."),
   feedback: z.string().describe("Brief positive/constructive feedback directly addressing the user"),
+  job_title: z.string().describe("The extracted job title from the job description"),
+  company_name: z.string().describe("The extracted company name from the job description if available, else 'Unknown'"),
 });
 
 export type AtsTailorResponse = z.infer<typeof AtsTailorResponseSchema>;

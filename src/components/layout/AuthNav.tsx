@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Link, useRouter } from '@/i18n/routing';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
-import { LogOut, LayoutDashboard, Settings } from 'lucide-react';
+import { LogOut, LayoutDashboard, Settings, ShieldCheck, Clock } from 'lucide-react';
 import { User } from '@supabase/supabase-js';
 import {
   DropdownMenu,
@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-export function AuthNav() {
+export function AuthNav({ isAdmin }: { isAdmin?: boolean }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const t = useTranslations('Nav');
@@ -94,11 +94,25 @@ export function AuthNav() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
+            <Link href="/dashboard/history" className="flex w-full items-center gap-2 cursor-pointer">
+              <Clock className="size-4" />
+              <span>{t('history')}</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
             <Link href="/dashboard/settings" className="flex w-full items-center gap-2 cursor-pointer">
               <Settings className="size-4" />
               <span>{t('settings')}</span>
             </Link>
           </DropdownMenuItem>
+          {isAdmin && (
+            <DropdownMenuItem>
+              <Link href="/admin" className="flex w-full items-center gap-2 cursor-pointer text-primary focus:text-primary">
+                <ShieldCheck className="size-4" />
+                <span>{t('admin')}</span>
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={handleLogout}

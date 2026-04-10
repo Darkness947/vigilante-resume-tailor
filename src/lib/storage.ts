@@ -31,5 +31,21 @@ export async function uploadPdfToStorage(buffer: Buffer, originalFilename: strin
     throw new Error(`Signed URL creation failed: ${signError.message}`);
   }
 
-  return signData.signedUrl;
+  return { 
+    url: signData.signedUrl, 
+    path: filePath 
+  };
+}
+
+export async function getFreshSignedUrls(paths: string[]) {
+  const { data, error } = await supabase.storage
+    .from('resumes')
+    .createSignedUrls(paths, 7200); // 2 hours
+
+  if (error) {
+    console.error('[Storage Utility] Batch signing failed:', error);
+    return null;
+  }
+
+  return data;
 }
