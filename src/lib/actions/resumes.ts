@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { AtsTailorResponse } from '@/lib/validation';
 import { revalidatePath } from 'next/cache';
 import { getFreshSignedUrls } from '@/lib/storage';
+import { sendTailoredResumeEmail } from '@/lib/email';
 
 /**
  * Extracts the Supabase storage path from a full signed URL or returns the path if already provided as one.
@@ -49,6 +50,46 @@ export async function saveResumeHistory(payload: {
     throw new Error('Authentication required to save history.');
   }
 
+  // Fetch profile to check email preferences
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('email_notifications')
+    .eq('id', user.id)
+    .single();
+
+  let emailSent = false;
+
+  // Fire off the email notification if opted-in
+  if (profile?.email_notifications && payload.tailored_pdf_url) {
+    try {
+      const path = extractStoragePath(payload.tailored_pdf_url);
+      let finalLink = payload.tailored_pdf_url;
+      
+      // We guarantee a fresh, high-privilege signed URL for the email
+      if (path) {
+        const signedData = await getFreshSignedUrls([path]);
+        const signedItem = signedData?.find(s => s.path === path || (s.path && (path.endsWith(s.path) || s.path.endsWith(path))));
+        if (signedItem?.signedUrl) {
+          finalLink = signedItem.signedUrl;
+        }
+      }
+
+      const emailAddress = user.email || '';
+      
+      if (emailAddress && finalLink.startsWith('http')) {
+        await sendTailoredResumeEmail({
+          toEmail: emailAddress,
+          resumeLink: finalLink,
+          atsScore: payload.ats_score,
+          jobTitle: payload.job_title || 'Target Role'
+        });
+        emailSent = true;
+      }
+    } catch (e) {
+      console.error('[saveResumeHistory] Failed to send email.', e);
+    }
+  }
+
   const { error } = await supabase.from('resumes').insert({
     user_id: user.id,
     original_text: payload.original_text,
@@ -63,7 +104,8 @@ export async function saveResumeHistory(payload: {
     tailoring_strength: payload.tailoring_strength,
     template_used: payload.template_used,
     tailored_pdf_url: payload.tailored_pdf_url, 
-    original_filename: payload.original_filename || 'unknown_resume.pdf'
+    original_filename: payload.original_filename || 'unknown_resume.pdf',
+    email_sent: emailSent
   });
 
   if (error) {

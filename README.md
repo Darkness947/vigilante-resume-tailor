@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔥 VIGILANTE Resume Tailor.
 
-## Getting Started
+> **"Advanced Targeting. Lethal Optimization."**
 
-First, run the development server:
+Vigilante is a full-stack, enterprise-grade Next.js application that ruthlessly optimizes unformatted resumes against targeted Applicant Tracking Systems (ATS). Built securely on the Vercel architecture.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚡ Core Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-   **Deep AI Integration**: Leverages Google Gemini 3.1 Pro APIs to forcefully strip, rewrite, and structure scattered career data.
+-   **Dynamic Localized Rendering**: Uses `@react-pdf/renderer` to universally compile pristine PDFs dynamically supporting **both English (LTR) and Arabic (RTL)** output templates.
+-   **Automated Email Dispatch**: Natively hooked into Nodemailer processing fresh signed download URLs mapping directly to individual users' email inboxes instantly after a successful generation.
+-   **Next-Gen Security Walls**: Locked down with Next.js specific SSR JWTs mapping directly to Row Level Security (RLS) PostgreSQL bounds within Supabase.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📂 Documentation Registry
 
-To learn more about Next.js, take a look at the following resources:
+The engineering process, decisions, and system diagrams are heavily documented. Explore the repository boundaries below:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 1. Developer Reports (`/reports`)
+1.  [Phase 0: Foundation & Infrastructure](reports/phase-0-report.md)
+2.  [Phase 1: Identity & Authentication](reports/phase-1-report.md)
+3.  [Phase 2: Visual Identity & LTR/RTL Logic](reports/phase-2-report.md)
+4.  [Phase 3: Deep AI Parsing Workflow](reports/phase-3-report.md)
+5.  [Phase 4: Output Compilation Engine](reports/phase-4-report.md)
+6.  [Phase 5: Secure Application Boundaries](reports/phase-5-report.md)
+7.  [Phase 6: Final Optimizations & Automated Dispatch](reports/phase-6-report.md)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 2. Standard Docs (`/docs`)
+-   [Requirements Matrix](docs/requirements.md)
+-   [Operational Walkthrough](docs/walkthrough.md)
+-   [Final Documentation Docs](docs/final_documentation.md)
 
-## Deploy on Vercel
+### 3. Architecture Blueprints (`/diagrams`)
+-   [System Architecture Overview](diagrams/system-architecture.md)
+-   [Core AI Tailoring Workflow](diagrams/ai-tailoring-workflow.md)
+-   [Automated Email Pipeline](diagrams/automated-dispatch.md)
+-   [Supabase Database Schema Map](diagrams/database-schema.md)
+-   [Authentication & Security Walls](diagrams/auth-rls.md)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Build Constraints
+The application enforces strict build rules out-of-the-box (`npm run lint`). Code will not execute locally or deploy successfully with unused variable remnants or memory leak hazards.
