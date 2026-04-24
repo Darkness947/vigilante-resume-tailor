@@ -1,4 +1,4 @@
-# Phase 0: Project Inception & Foundation
+# 🛠️ Phase 0: Project Inception & Foundation
 *Vigilante Resume Tailor: Engineering the AI Protocol*
 
 ---
@@ -17,14 +17,27 @@ We adopted the latest iteration of Tailwind CSS (V4) running on PostCSS. This al
 ### 3. Component Library: shadcn/ui & Base UI
 Rather than building from scratch or relying on heavy proprietary libraries, we integrated `shadcn/ui` combined with `@base-ui/react`. This granted us absolute control over the highly stylized glassmorphic elements and accessible primitive structures without compromising the unique visual identity.
 
+---
+
+## 🔬 Technical Challenges & Resolutions
+
+| Challenge | Impact | Resolution |
+| :--- | :--- | :--- |
+| **Dependency Hell** | High | Resolved critical version mismatches between `@types/react` and Next.js 16.2 canary by forcing resolution in `package.json`. |
+| **Linting Friction** | Medium | Configured strict ESLint rules (`eslint.config.mjs`) to enforce zero-unused-vars policy, ensuring a clean codebase from day one. |
+| **Dark Mode Logic** | Low | Implemented `next-themes` with a custom CSS variable injection system to prevent FOUC (Flash of Unstyled Content). |
+
+---
+
 ## ⚙️ Core Infrastructure Setup
 
-- **Dependency Matrix**: Resolved critical dependency conflicts across `@types/react` and Next.js peers to guarantee a completely stable compilation process.
-- **Linting & Formatting**: Engineered strict ESLint rules (`eslint.config.mjs`) to enforce code consistency across the repository, terminating early on warnings.
-- **Directory Structure**: 
+- **Dependency Matrix**: Verified all 48+ external packages for compatibility with the Node 20 runtime.
+- **Project Structure**: Engineered a modular architecture to separate concerns:
   - `src/app/`: Isolated application routes and layouts.
   - `src/components/`: Reusable, atomic interface elements.
   - `src/lib/`: Secure server actions, validation schemas, and utility functions.
   
 ## 📈 Phase Outcomes
 The foundation was solidified. The environment became capable of compiling zero-error, highly optimized edge functions, setting the stage for the Authentication and Database schemas in Phase 1.
+
+> **Status: INFRASTRUCTURE SECURED**

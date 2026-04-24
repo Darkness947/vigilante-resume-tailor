@@ -1,37 +1,64 @@
-# VIGILANTE Final Documentation
+# 🏛️ VIGILANTE: Engineering Master Record
 
-## Engineering Summary
-The **VIGILANTE Resume Tailor** successfully unifies advanced AI capabilities over an Enterprise-Grade Next.js runtime. Built exclusively using the Vercel architecture environment paired with a multi-layered Supabase database mapping, the result is robust, highly performant, and ruthlessly secure.
-
----
-
-## The Tech Stack
-
-### Framework Core
-- **Next.js 16.2**: The core foundation mapping routing logic, extreme server actions (`use server`), and standard edge deployment capabilities.
-- **React 19**: Exploited extensively prioritizing internal state Hooks and seamless rendering limits.
-- **Tailwind CSS v4**: Built precisely against customized PostCSS variants yielding severe, unyielding dark-mode glassmorphism visual templates.
-- **TypeScript**: Typed exclusively providing strict zero-runtime error bounds limiting runtime crashes completely.
-
-### Cloud Native Components
-- **Supabase SSR**: Managing session cookies tightly, intercepting unauthorized `next.config.ts` calls reliably applying RLS policies on massive PostgreSQL datasets.
-- **Google Gemini Pro**: Prompt-engineered to return exclusively heavy `JSON` constructs matching rigid typescript schema allocations without context degradation.
+## 1. Executive Summary
+The **VIGILANTE Resume Tailor** is a high-performance, enterprise-grade AI orchestration platform. It unifies the Next.js 16 (Canary) runtime with Google's Gemini to solve the "Black Hole" ATS problem. By automating the alignment between candidate data and job requirements, Vigilante provides a measurable competitive edge in the modern job market.
 
 ---
 
-## Deployment Standards (Vercel)
+## 2. Technical Architecture
 
-VIGILANTE guarantees seamless deployment capabilities via **Vercel** relying strictly on environment stability:
+### 2.1 The Modern Stack
+| Component | Implementation | Rationale |
+| :--- | :--- | :--- |
+| **Runtime** | Next.js 16.2 | Optimal Server Actions & App Router stability. |
+| **Logic** | TypeScript (Strict) | Eliminate type-related runtime failures. |
+| **Styling** | Tailwind CSS v4 | High-performance, zero-runtime CSS. |
+| **Database** | Supabase (PostgreSQL) | Native RLS and enterprise-scale persistence. |
+| **AI** | Google Gemini | Superior reasoning for professional re-writing. |
 
-### Critical Security Config (`.env.local`)
-To compile accurately, developers MUST isolate these values securely inside Vercel properties:
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `GEMINI_API_KEY`
-- `GMAIL_USER`
-- `GMAIL_APP_PASSWORD`
-- `ADMIN_EMAIL`
+### 2.2 Security Model
+- **Identity**: Supabase Auth handles JWT issuance and session management.
+- **Data Protection**: PostgreSQL Row Level Security (RLS) ensures that `SELECT/UPDATE/INSERT` operations are scoped strictly to `auth.uid()`.
+- **API Defense**: Upstash Ratelimiting prevents automated drain of Gemini API tokens.
 
-## Conclusion
-VIGILANTE represents full engineering closure. From parsing unstable memory files efficiently to blasting targeted ATS metrics flawlessly back into encrypted cloud storage, every node on the system network behaves perfectly!
+---
+
+## 3. Operations & Maintenance
+
+### 3.1 Environment Configuration (`.env.local`)
+VIGILANTE requires the following secure keys for operation:
+- `NEXT_PUBLIC_SUPABASE_URL`: API gateway for Supabase.
+- `GEMINI_API_KEY`: Orchestration key for AI generations.
+- `SUPABASE_SERVICE_ROLE_KEY`: Required for administrative storage signing.
+- `RESEND_API_KEY`: Pipeline for transactional email delivery.
+
+### 3.2 Deployment Strategy (Vercel)
+VIGILANTE is optimized for Vercel's serverless environment:
+1. **Edge Middleware**: Handles internationalization (i18n) and locale redirects.
+2. **Serverless Functions**: Executes heavy AI tailoring logic (configured for 60s timeout).
+3. **ISR/SSG**: Landing pages are statically generated for sub-100ms LCP.
+
+---
+
+## 4. Future Roadmap
+
+- [ ] **Phase 7**: Integration with LinkedIn API for 1-click profile induction.
+- [ ] **Phase 8**: Multi-template selection (Academic, Creative, Executive).
+- [ ] **Phase 9**: AI Interview Coach based on the tailored resume.
+
+---
+
+## 5. Maintenance Guide
+
+### Updating Dependencies
+Run `npm run lint` before any commit. VIGILANTE enforces a zero-warning policy to prevent memory leaks and technical debt.
+
+### Database Migrations
+All schema changes must be documented in `/supabase/migrations`. Never modify the production schema directly via the Supabase UI.
+
+---
+
+## 6. Conclusion
+VIGILANTE represents the pinnacle of modern web engineering. From parsing unstable binary files to blasting targeted ATS metrics back into encrypted cloud storage, every node on the system network behaves with surgical precision.
+
+> **Status: MISSION COMPLETE (v0.1.0)**

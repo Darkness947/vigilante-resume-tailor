@@ -15,5 +15,5 @@ graph TD
     
     Local_API -->|pdf-parse / mammoth| Parser[Memory Parser]
     Local_API2 -->|JSON Schema Prompt| Gemini[Google Gemini 3.1 Pro]
-    Local_API3 -->|PDF Buffer Generate| PDFRenderer[@react-pdf/renderer]
+    Local_API3 -->|PDF Buffer Generate| PDFRenderer["@react-pdf/renderer"]
 ```

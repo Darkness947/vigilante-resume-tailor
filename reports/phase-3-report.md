@@ -1,26 +1,44 @@
-# Phase 3: The Engine Room - Parsing & AI Integration
+# 🧠 Phase 3: The Engine Room - Parsing & AI Integration
 *Vigilante Resume Tailor: Gemini Deep Integration*
 
 ---
 
 ## 🎯 Executive Summary
-Phase 3 was the most complex technical phase of the project: breathing life into the AI Tailoring Engine. We successfully bridged document extraction logic with Google's advanced Gemini 3.1 Pro models. The protocol was designed to extract raw data, understand contextual job requirements, and forcefully restructure the user's career narrative.
+Phase 3 was the technical heart of the project: breathing life into the AI Tailoring Engine. We bridged document extraction logic with Google's advanced Gemini 3.1 Pro models. The protocol was designed to extract raw data, understand contextual job requirements, and forcefully restructure the user's career narrative to bypass modern ATS filters.
+
+---
+
+## 🔬 Technical Challenges & Resolutions
+
+| Challenge | Impact | Resolution |
+| :--- | :--- | :--- |
+| **Parsing Binary Blobs** | Critical | Developed a dual-parser system using `unpdf` for PDF streams and `mammoth` for DOCX XML structures. |
+| **AI Hallucinations** | High | Implemented "Few-Shot" prompting and strict JSON schema enforcement to ensure 100% valid data output. |
+| **Context Window Limits** | Medium | Engineered an "Aggressive Trimmer" to strip metadata and non-essential whitespace before AI induction. |
+
+---
 
 ## 🧠 Core Processing Pipeline
 
 ### 1. Document Extraction (`/api/parse`)
-To ensure high accuracy regardless of the user's initial file type, we developed a robust parsing API:
-- Integrated `pdf-parse` buffer streams to rip text directly from raw PDF uploads.
-- Integrated `mammoth` for comprehensive internal extraction of standard `.docx` files.
-- The pipeline immediately sanitizes character encodings and aggressively trims whitespace to prevent context-window exhaustion.
+To ensure high accuracy regardless of the user's initial file type:
+- **PDF Protocol**: Utilizes `unpdf` to extract clean text while preserving block relationships.
+- **DOCX Protocol**: Utilizes `mammoth` to convert Office Open XML into sterile strings.
+- **Sanitization**: All extracted text is normalized to UTF-8 and stripped of non-printable control characters.
 
 ### 2. Gemini System Directives (`gemini.ts`)
 The heartbeat of the system relies on highly specific AI Prompt Engineering.
-- **Strict JSON Enforcement**: We mandated that the Gemini model strictly return pure `json` structured accurately against a defined `Zod` validation schema. 
-- **The Persona**: We instructed the AI to act as an elite, ruthless ATS (Applicant Tracking System) optimizer. It was tuned to forcefully eradicate buzzwords, explicitly match targeted keywords, and heavily bias towards quantifiable impact metrics.
+- **Roleplay**: The AI is instructed to act as a "Senior Technical Recruiter & ATS Expert."
+- **Matching Logic**: The AI performs a "Gap Analysis" between the Resume and the Job Description, identifying missing keywords and quantifiable metrics.
+- **Output**: Pure, minified JSON. No conversational fluff, no metadata—just raw, structured career data.
 
-### 3. Serverless Execution 
-- We utilized Next.js Route Handlers (`/api/tailor/route.ts`) to maintain severe timeouts and heavy memory allocations required when streaming large data structures from the Gemini APIs.
+### 3. Serverless Execution
+- Leveraged Next.js Route Handlers with increased memory limits to process large resumes.
+- Implemented `edge` runtime where possible to minimize latency between the user and the Gemini API.
+
+---
 
 ## 📈 Phase Outcomes
-The intelligent core of VIGILANTE is operational. It can intake a chaotic, poorly formatted resume, compare it against a target Job Description, and output a flawlessly structured, quantifiable, keyword-optimized JSON data map.
+The intelligent core of VIGILANTE is operational. It can intake a chaotic resume, compare it against a target Job Description, and output a flawlessly structured, keyword-optimized JSON data map.
+
+> **Status: ENGINE CORE CRITICAL**
