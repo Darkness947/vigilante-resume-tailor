@@ -22,7 +22,7 @@ A sophisticated rendering system powered by `@react-pdf/renderer` and `react-pdf
 Once generation is complete, Vigilante automatically handles:
 - Secure PDF storage in **Supabase Storage**.
 - Generation of signed, time-limited download URLs.
-- Instant email delivery via **Nodemailer** / **Resend**.
+- Instant email delivery via **Nodemailer**.
 
 ### 🛡️ Iron-Clad Security
 Built on a foundation of security:
@@ -38,7 +38,7 @@ Built on a foundation of security:
 | :--- | :--- |
 | **Framework** | [Next.js 16 (Canary/Latest)](https://nextjs.org/) |
 | **Language** | [TypeScript](https://www.typescriptlang.org/) |
-| **AI Orchestration** | [Google Gemini 3.1 Pro](https://deepmind.google/technologies/gemini/) |
+| **AI Orchestration** | [Google Gemini](https://deepmind.google/technologies/gemini/) |
 | **Database & Auth** | [Supabase (PostgreSQL)](https://supabase.com/) |
 | **Styling** | [Tailwind CSS 4](https://tailwindcss.com/) & [Framer Motion](https://www.framer.com/motion/) |
 | **PDF Generation** | [@react-pdf/renderer](https://react-pdf.org/) |

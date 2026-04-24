@@ -46,7 +46,7 @@ Switch universally from `en` (English) to `ar` (Arabic). The UI will flip to RTL
 
 Click **"TAILOR RESUME"**. Here is what happens under the hood:
 1. **Extraction**: VIGILANTE strips the document into raw text.
-2. **Analysis**: Connects to Google Gemini 3.1 Pro APIs.
+2. **Analysis**: Connects to Google Gemini APIs.
 3. **Scoring**: Calculates your current match score vs. the target job.
 4. **Optimization**: Re-writes your professional summary and experience bullets.
 5. **Synthesis**: The React-PDF Renderer compiles the new JSON into a pristine PDF.
