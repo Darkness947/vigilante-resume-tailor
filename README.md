@@ -1,6 +1,6 @@
 # 🎯 VIGILANTE: Advanced Resume Tailoring Engine
 
-![VIGILANTE Hero Banner](vigilante_hero_banner_1777041855787.png)
+![VIGILANTE Hero Banner](images/hero-banner.png)
 
 > **"Advanced Targeting. Lethal Optimization."**
 
@@ -144,6 +144,5 @@ Explore our detailed engineering logs and operational guides:
 
 ---
 
-## 🛡️ License
 
-Built for the elite. All rights reserved. 2026 Vigilante Team.
+All Rights Reserved. 2026 Vigilante Resume Tailor.
